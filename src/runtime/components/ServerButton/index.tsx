@@ -1,9 +1,11 @@
-import classes from './index.module.sass';
+import { Server } from '@aurora-launcher/core';
+
 import { usePingServer } from '../../hooks/pingServer';
+import classes from './index.module.sass';
 
 interface ServerButtonProps {
     onClick: () => void;
-    server: string;
+    server: Server;
 }
 
 export function ServerButton({ onClick, server }: ServerButtonProps) {

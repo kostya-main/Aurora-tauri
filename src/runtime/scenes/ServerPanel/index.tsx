@@ -1,15 +1,16 @@
+import { Server } from '@aurora-launcher/core';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
+import { LoadProgress } from '../../../../common/types';
 import If from '../../components/If';
 import { useTitlebar } from '../../components/TitleBar/hooks';
-import classes from './index.module.sass';
 import { usePingServer } from '../../hooks/pingServer';
+import classes from './index.module.sass';
+import { SettingsFormat } from '../../../../common/types';
 
 // TODO Refactoring scene
 export default function ServerPanel() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [, setSelectedProfile] = useState({} as string);
-    const [selectedServer, setSelectedServer] = useState({} as string);
+    const [selectedServer, setSelectedServer] = useState<Server>();
     const players = usePingServer(selectedServer);
 
     const [showConsole, setShowConsole] = useState(false);
@@ -19,19 +20,30 @@ export default function ServerPanel() {
     const consoleRef = useRef() as MutableRefObject<HTMLPreElement>;
     const progressLine = useRef() as MutableRefObject<HTMLDivElement>;
     const progressInfo = useRef() as MutableRefObject<HTMLDivElement>;
+    const [settings, setSettings] = useState<SettingsFormat>({});
 
-    const { showTitlebarBackBtn, hideTitlebarBackBtn } = useTitlebar();
+    const { showTitlebarBackBtn, hideTitlebarBackBtn, 
+        hideTitlebarSettingsBtn, showTitlebarSettingsBtn, 
+        resetTitlebarTitleText, hideTitlebarLogoutBtn } = useTitlebar();
 
     useEffect(() => {
-        launcherAPI.scenes.serverPanel.getProfile().then(setSelectedProfile);
         launcherAPI.scenes.serverPanel.getServer().then(setSelectedServer);
-
+        showTitlebarSettingsBtn();
+        hideTitlebarLogoutBtn();
         showTitlebarBackBtn();
+        resetTitlebarTitleText();
+        launcherAPI.scenes.settings
+            .getAllFields()
+            .then((res) => {
+                setSettings(res);
+            });
+        launcherAPI.rpc.updateActivity('profile');
     }, []);
 
     const startGame = () => {
+        hideTitlebarSettingsBtn();
         hideTitlebarBackBtn();
-        setShowConsole(true);
+        if (settings.startDebug) setShowConsole(true);
         consoleRef.current?.replaceChildren();
         setGameStarted(true);
         launcherAPI.scenes.serverPanel.startGame(
@@ -39,11 +51,14 @@ export default function ServerPanel() {
             progress,
             stopGame,
         );
+        launcherAPI.rpc.updateActivity('game');
     };
 
     const stopGame = () => {
+        showTitlebarSettingsBtn();
         setGameStarted(false);
         showTitlebarBackBtn();
+        launcherAPI.rpc.updateActivity('profile');
     };
 
     const textToConsole = (string: string) => {
@@ -54,7 +69,7 @@ export default function ServerPanel() {
         consoleEl.scrollTop = consoleEl.scrollHeight;
     };
 
-    const progress = ({ total, loaded, type }) => {
+    const progress = ({ total, loaded, type }: LoadProgress) => {
         if (loaded < total) setShowProgress(true);
 
         const percent = (loaded / total) * 100;
@@ -78,7 +93,7 @@ export default function ServerPanel() {
     return (
         <div className={classes.window}>
             <div className={classes.info}>
-                <div className={classes.title}>{selectedServer.title}</div>
+                <div className={classes.title}>{selectedServer?.title}</div>
                 <div className={classes.status}>
                     <div className={classes.gamers}>
                         Игроков

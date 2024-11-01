@@ -1,23 +1,33 @@
+import { Server } from '@aurora-launcher/core';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ServerButton } from '../../components/ServerButton';
 import SkinView from '../../components/SkinView';
-import classes from './index.module.sass';
 import { useTitlebar } from '../../components/TitleBar/hooks';
+import classes from './index.module.sass';
 
 export default function ServersList() {
-    const { hideTitlebarBackBtn } = useTitlebar();
-    hideTitlebarBackBtn();
+    const {
+        hideTitlebarBackBtn,
+        showTitlebarSettingsBtn,
+        resetTitlebarTitleText,
+        showTitlebarLogoutBtn,
+    } = useTitlebar();
 
-    const [servers, setServers] = useState<[]>([]);
+    const [servers, setServers] = useState<Server[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
+        hideTitlebarBackBtn();
+        showTitlebarLogoutBtn();
+        showTitlebarSettingsBtn();
+        resetTitlebarTitleText();
         launcherAPI.scenes.serversList.getServers().then(setServers);
+        launcherAPI.rpc.updateActivity('default');
     }, []);
 
-    const selectServer = async (server: string) => {
+    const selectServer = async (server: Server) => {
         await launcherAPI.scenes.serversList.selectServer(server);
         navigate('/ServerPanel');
     };
