@@ -1,3 +1,5 @@
+mod grpc;
+
 use tauri::Manager;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -17,7 +19,11 @@ pub fn run() {
                        .set_focus();
         }))
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler!
+            [
+                greet,
+                grpc::auth
+            ])
         .setup(|app| {
             #[cfg(debug_assertions)]
             {

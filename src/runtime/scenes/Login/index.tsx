@@ -1,5 +1,7 @@
 import { FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { invoke } from '@tauri-apps/api/core';
+import * as proto from "@aurora-launcher/proto";
 
 import { setUserData } from '../../../utils';
 import logo from '../../assets/images/logo.png?asset';
@@ -49,10 +51,11 @@ export default function Login() {
         }
 
         try {
-            const userData = await launcherAPI.scenes.login.auth(
+            const userData: proto.AuthResponse = await invoke('auth', {
                 login,
                 password,
-            );
+            });
+            console.log(userData);
             if (autoLogin) launcherAPI.scenes.settings.setField('token', userData.token)
             setUserData(userData);
             setTitlebarUserText(userData.username);
