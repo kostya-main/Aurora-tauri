@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { getVersion } from '@tauri-apps/api/app';
-//import { window } from '@config';
 import { SettingsFormat } from '../../../../common/types';
 import logo from '../../assets/images/logo.png';
 import If from '../../components/If';
@@ -31,12 +30,14 @@ export default function Settings() {
         launcherAPI.scenes.settings
             .getTotalMemory()
             .then((res) => SetTotalMemory(res));
+        getVersion().then((ver) => SetVersion(ver));
     }, []);
 
     const [main, EditButtonMain] = useState(true);
     const [info, EditButtonInfo] = useState(false);
 
     const [totalMemory, SetTotalMemory] = useState(0);
+    const [version, SetVersion] = useState('');
     const [settings, setSettings] = useState<SettingsFormat>({});
 
     const setValue = (field: string, value: any) => {
@@ -58,12 +59,6 @@ export default function Settings() {
                 EditButtonInfo(true);
                 return;
         }
-    };
-
-    const version = () => {
-        getVersion().then((res) => {
-            return res;
-        });
     };
 
     return (

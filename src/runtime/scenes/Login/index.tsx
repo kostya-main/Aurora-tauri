@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { invoke } from '@tauri-apps/api/core';
 import * as proto from "@aurora-launcher/proto";
@@ -8,7 +8,7 @@ import logo from '../../assets/images/logo.png?asset';
 import { useModal } from '../../components/Modal/hooks';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import classes from './index.module.sass';
-//import { window } from '@config';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 interface AuthData {
     [k: string]: string;
@@ -18,6 +18,7 @@ interface AuthData {
 }
 
 export default function Login() {
+    const [title, setTitle] = useState('');
     const { showModal } = useModal();
     const { showTitlebarSettingsBtn } = useTitlebar();
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ export default function Login() {
         //        })
         //    });
         hideTitlebarLogoutBtn();
+        getCurrentWindow().title().then((title) => setTitle(title));
     }, []);
 
     const auth = async (event: FormEvent<HTMLFormElement>) => {
@@ -71,7 +73,7 @@ export default function Login() {
     return (
         <div className={classes.block}>
             <img src={logo} />
-            <div>{'window.title'}</div>
+            <div>{title}</div>
             <p>
                 Введите логин и пароль,
                 <br />

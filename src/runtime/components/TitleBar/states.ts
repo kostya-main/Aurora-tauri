@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { window } from '@config';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 import { getUserData } from '../../../utils';
 
@@ -28,7 +28,7 @@ export const titlebarTitle = atom({
     key: 'titlebar.title',
     default: {
         show: true,
-        text: 'window.title',
+        text: await getCurrentWindow().title(),
     },
 });
 

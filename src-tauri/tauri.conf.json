@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "title": "Aurora Launcher",
         "decorations": false,
         "width": 900,
         "height": 550,
