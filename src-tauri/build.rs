@@ -5,6 +5,7 @@ fn main() {
     tonic_build::configure()
         .build_server(false)
         .type_attribute("AuthResponse", "#[derive(serde::Deserialize, serde::Serialize)]")
+        .type_attribute("ProfileResponse", "#[derive(serde::Deserialize, serde::Serialize)]")
         .compile_protos(&["../node_modules/@aurora-launcher/proto/main.proto"], &["../node_modules/@aurora-launcher/proto"])
         .unwrap();
     tauri_build::build()

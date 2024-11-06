@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { invoke } from '@tauri-apps/api/core';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import * as proto from "@aurora-launcher/proto";
 
 import { setUserData } from '../../../utils';
@@ -8,7 +9,6 @@ import logo from '../../assets/images/logo.png?asset';
 import { useModal } from '../../components/Modal/hooks';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import classes from './index.module.sass';
-import { getCurrentWindow } from '@tauri-apps/api/window';
 
 interface AuthData {
     [k: string]: string;
