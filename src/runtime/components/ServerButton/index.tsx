@@ -1,19 +1,20 @@
-import { Server } from '@aurora-launcher/core';
+import * as proto from "@aurora-launcher/proto";
 
 import { usePingServer } from '../../hooks/pingServer';
 import classes from './index.module.sass';
 
 interface ServerButtonProps {
     onClick: () => void;
-    server: Server;
+    server: proto.Server;
 }
 
 export function ServerButton({ onClick, server }: ServerButtonProps) {
     const { online, max } = usePingServer(server);
+    console.log(server);
 
     return (
         <button className={classes.button} onClick={onClick}>
-            <span className={classes.title}>{server.title}</span>
+            <span className={classes.title}>{server.serverInfo?.title}</span>
             <span className={classes.online}>
                 {online} / {max}
             </span>

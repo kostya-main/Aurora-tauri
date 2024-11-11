@@ -4,8 +4,8 @@ import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import * as proto from "@aurora-launcher/proto";
 
-import { setUserData } from '../../../utils';
-import logo from '../../assets/images/logo.png?asset';
+import { setUserData, store } from '../../../utils';
+import logo from '../../assets/images/logo.png';
 import { useModal } from '../../components/Modal/hooks';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import classes from './index.module.sass';
@@ -35,6 +35,11 @@ export default function Login() {
         //            navigate('ServersList');
         //        })
         //    });
+        store.get('token').then((token) => {
+            if (token!="0")
+                //authToken() 
+                console.log(token);
+        });
         hideTitlebarLogoutBtn();
         getCurrentWindow().title().then((title) => setTitle(title));
     }, []);
@@ -58,7 +63,7 @@ export default function Login() {
                 password,
             });
             console.log(userData);
-            if (autoLogin) launcherAPI.scenes.settings.setField('token', userData.token)
+            if (autoLogin) store.set('token', userData.token);
             setUserData(userData);
             setTitlebarUserText(userData.username);
         } catch (error) {

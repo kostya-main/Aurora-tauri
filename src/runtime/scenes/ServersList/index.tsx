@@ -24,14 +24,15 @@ export default function ServersList() {
         showTitlebarLogoutBtn();
         showTitlebarSettingsBtn();
         resetTitlebarTitleText();
-        invoke('get_servers').then((res) => {
-            setServers(res);
+        invoke('get_servers').then((res: proto.ServersResponse) => {
+            setServers(res.servers);
         });
         //launcherAPI.rpc.updateActivity('default');
     }, []);
 
     const selectServer = async (server: proto.Server) => {
-        await launcherAPI.scenes.serversList.selectServer(server);
+        console.log(server);
+        //await launcherAPI.scenes.serversList.selectServer(server);
         navigate('/ServerPanel');
     };
 

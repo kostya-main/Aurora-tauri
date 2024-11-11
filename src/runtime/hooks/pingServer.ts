@@ -7,12 +7,12 @@ export function usePingServer(server?: Server) {
     useEffect(() => {
         if (!server) return;
 
-        launcherAPI.scenes.serversList
-            .pingServer(server)
-            .then(({ players, maxPlayers }) => {
-                // Можно также передать инфу online сервер или нет
-                setPlayers({ online: players || 0, max: maxPlayers || 0 });
-            });
+        //launcherAPI.scenes.serversList
+        //    .pingServer(server)
+        //    .then(({ players, maxPlayers }) => {
+        //        // Можно также передать инфу online сервер или нет
+        //        setPlayers({ online: players || 0, max: maxPlayers || 0 });
+        //    });
     }, [server]);
 
     return players;

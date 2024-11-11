@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
 import If from '../If';
+import { store } from '../../../utils';
 import classes from './index.module.sass';
 import {
     titlebarBackBtn,
@@ -38,7 +39,7 @@ export default function TitleBar() {
         deleteUserData();
         hideTitlebarSettingsBtn();
         setTitlebarUserText("");
-        launcherAPI.scenes.settings.setField('token', "0");
+        store.set('token', "0");
         navigate('/');
     }
     function toSettings() {

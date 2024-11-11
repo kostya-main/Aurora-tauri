@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { getVersion } from '@tauri-apps/api/app';
+import { open } from '@tauri-apps/plugin-shell';
 import { SettingsFormat } from '../../../../common/types';
 import logo from '../../assets/images/logo.png';
 import If from '../../components/If';
 import { MemoryRange } from '../../components/MemoryRange';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import classes from './index.module.sass';
+import { store } from '../../../utils';
 
 export default function Settings() {
     const {
@@ -45,7 +47,7 @@ export default function Settings() {
             ...settings,
             [field]: value,
         });
-        launcherAPI.scenes.settings.setField(field, value);
+        store.set(field, value);
     };
 
     const Button = (type: string) => {
@@ -159,7 +161,7 @@ export default function Settings() {
                     <div className={classes.icons}>
                         <button
                             onClick={() =>
-                                launcherAPI.window.openExternal(
+                                open(
                                     'https://www.youtube.com/@AuroraTeamRu',
                                 )
                             }
@@ -173,7 +175,7 @@ export default function Settings() {
                         </button>
                         <button
                             onClick={() =>
-                                launcherAPI.window.openExternal(
+                                open(
                                     'https://discord.gg/2NvYTcv',
                                 )
                             }
@@ -187,7 +189,7 @@ export default function Settings() {
                         </button>
                         <button
                             onClick={() =>
-                                launcherAPI.window.openExternal(
+                                open(
                                     'https://aurora-launcher.ru/',
                                 )
                             }
@@ -201,7 +203,7 @@ export default function Settings() {
                         </button>
                         <button
                             onClick={() =>
-                                launcherAPI.window.openExternal(
+                                open(
                                     'https://github.com/AuroraTeam/AuroraLauncher',
                                 )
                             }
