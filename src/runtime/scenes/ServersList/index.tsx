@@ -1,4 +1,3 @@
-import * as proto from "@aurora-launcher/proto";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { invoke } from '@tauri-apps/api/core';
@@ -16,7 +15,7 @@ export default function ServersList() {
         showTitlebarLogoutBtn,
     } = useTitlebar();
 
-    const [servers, setServers] = useState<proto.Server[]>([]);
+    const [servers, setServers] = useState<Server[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,14 +23,13 @@ export default function ServersList() {
         showTitlebarLogoutBtn();
         showTitlebarSettingsBtn();
         resetTitlebarTitleText();
-        invoke('get_servers').then((res: proto.ServersResponse) => {
-            setServers(res.servers);
+        invoke('get_servers').then((message) => {
+            setServers((message as Get_servers).servers);
         });
         //launcherAPI.rpc.updateActivity('default');
     }, []);
 
-    const selectServer = async (server: proto.Server) => {
-        console.log(server);
+    const selectServer = async (server: Server) => {
         //await launcherAPI.scenes.serversList.selectServer(server);
         navigate('/ServerPanel');
     };

@@ -1,4 +1,4 @@
-import { Server } from '@aurora-launcher/core';
+import { invoke } from '@tauri-apps/api/core';
 import { useEffect, useState } from 'react';
 
 export function usePingServer(server?: Server) {
@@ -7,12 +7,12 @@ export function usePingServer(server?: Server) {
     useEffect(() => {
         if (!server) return;
 
-        //launcherAPI.scenes.serversList
-        //    .pingServer(server)
-        //    .then(({ players, maxPlayers }) => {
-        //        // Можно также передать инфу online сервер или нет
-        //        setPlayers({ online: players || 0, max: maxPlayers || 0 });
-        //    });
+        invoke('ping', {
+            host: server.server_info.ip,
+            port: server.server_info.port,
+        }).then((message) => {
+            setPlayers({ online: (message as Ping).online || 0, max: (message as Ping).max || 0 });
+        });
     }, [server]);
 
     return players;

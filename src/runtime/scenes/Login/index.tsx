@@ -2,7 +2,6 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import * as proto from "@aurora-launcher/proto";
 
 import { setUserData, store } from '../../../utils';
 import logo from '../../assets/images/logo.png';
@@ -58,7 +57,7 @@ export default function Login() {
         }
 
         try {
-            const userData: proto.AuthResponse = await invoke('auth', {
+            const userData: Auth = await invoke('auth', {
                 login,
                 password,
             });

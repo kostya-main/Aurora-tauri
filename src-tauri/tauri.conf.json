@@ -18,7 +18,8 @@
         "decorations": false,
         "resizable": false,
         "maximizable": false,
-        "fullscreen": false
+        "fullscreen": false,
+        "shadow": false
       }
     ],
     "security": {

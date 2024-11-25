@@ -1,12 +1,11 @@
-import { Server } from '@aurora-launcher/core';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
-import { LoadProgress } from '../../../../common/types';
+//import { LoadProgress } from '../../../../common/types';
 import If from '../../components/If';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import { usePingServer } from '../../hooks/pingServer';
 import classes from './index.module.sass';
-import { SettingsFormat } from '../../../../common/types';
+//import { SettingsFormat } from '../../../../common/types';
 
 // TODO Refactoring scene
 export default function ServerPanel() {
@@ -27,17 +26,18 @@ export default function ServerPanel() {
         resetTitlebarTitleText, hideTitlebarLogoutBtn } = useTitlebar();
 
     useEffect(() => {
-        launcherAPI.scenes.serverPanel.getServer().then(setSelectedServer);
+        console.log(selectedServer);
+        //launcherAPI.scenes.serverPanel.getServer().then(setSelectedServer);
         showTitlebarSettingsBtn();
         hideTitlebarLogoutBtn();
         showTitlebarBackBtn();
         resetTitlebarTitleText();
-        launcherAPI.scenes.settings
-            .getAllFields()
-            .then((res) => {
-                setSettings(res);
-            });
-        launcherAPI.rpc.updateActivity('profile');
+        //launcherAPI.scenes.settings
+        //    .getAllFields()
+        //    .then((res) => {
+        //        setSettings(res);
+        //    });
+        //launcherAPI.rpc.updateActivity('profile');
     }, []);
 
     const startGame = () => {
@@ -46,19 +46,19 @@ export default function ServerPanel() {
         if (settings.startDebug) setShowConsole(true);
         consoleRef.current?.replaceChildren();
         setGameStarted(true);
-        launcherAPI.scenes.serverPanel.startGame(
-            textToConsole,
-            progress,
-            stopGame,
-        );
-        launcherAPI.rpc.updateActivity('game');
+        //launcherAPI.scenes.serverPanel.startGame(
+        //    textToConsole,
+        //    progress,
+        //    stopGame,
+        //);
+        //launcherAPI.rpc.updateActivity('game');
     };
 
     const stopGame = () => {
         showTitlebarSettingsBtn();
         setGameStarted(false);
         showTitlebarBackBtn();
-        launcherAPI.rpc.updateActivity('profile');
+        //launcherAPI.rpc.updateActivity('profile');
     };
 
     const textToConsole = (string: string) => {
@@ -93,7 +93,7 @@ export default function ServerPanel() {
     return (
         <div className={classes.window}>
             <div className={classes.info}>
-                <div className={classes.title}>{selectedServer?.title}</div>
+                <div className={classes.title}>{selectedServer?.server_info.title}</div>
                 <div className={classes.status}>
                     <div className={classes.gamers}>
                         Игроков
