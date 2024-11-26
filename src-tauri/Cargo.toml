@@ -27,6 +27,7 @@ tonic = "0.12.3"
 prost = "0.13.3"
 tauri-plugin-store = "2"
 mc-query = "1.1.0"
+declarative-discord-rich-presence = { git = "https://github.com/KPidS/declarative-discord-rich-presence", version = "0.1.0" }
 
 [profile.dev]
 incremental = true # Compile your binary in smaller steps.

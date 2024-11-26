@@ -34,6 +34,7 @@ export default function Login() {
         //            navigate('ServersList');
         //        })
         //    });
+        invoke('set_activity', {status: "default"})
         store.get('token').then((token) => {
             if (token!="0")
                 //authToken() 

@@ -26,7 +26,7 @@ export default function ServersList() {
         invoke('get_servers').then((message) => {
             setServers((message as Get_servers).servers);
         });
-        //launcherAPI.rpc.updateActivity('default');
+        invoke('set_activity', {status: "default"});
     }, []);
 
     const selectServer = async (server: Server) => {

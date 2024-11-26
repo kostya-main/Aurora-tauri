@@ -1,4 +1,5 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { invoke } from '@tauri-apps/api/core';
 
 //import { LoadProgress } from '../../../../common/types';
 import If from '../../components/If';
@@ -37,7 +38,7 @@ export default function ServerPanel() {
         //    .then((res) => {
         //        setSettings(res);
         //    });
-        //launcherAPI.rpc.updateActivity('profile');
+        invoke('set_activity', {status: "profile"});
     }, []);
 
     const startGame = () => {
@@ -51,14 +52,14 @@ export default function ServerPanel() {
         //    progress,
         //    stopGame,
         //);
-        //launcherAPI.rpc.updateActivity('game');
+        invoke('set_activity', {status: "game"});
     };
 
     const stopGame = () => {
         showTitlebarSettingsBtn();
         setGameStarted(false);
         showTitlebarBackBtn();
-        //launcherAPI.rpc.updateActivity('profile');
+        invoke('set_activity', {status: "profile"});
     };
 
     const textToConsole = (string: string) => {
