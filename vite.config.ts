@@ -32,12 +32,5 @@ export default defineConfig(async () => ({
   build: {
     target: 'esnext',
     chunkSizeWarningLimit: 1000,
-  },
-  css: {
-    preprocessorOptions: {
-        sass: {
-            api: 'modern-compiler',
-        },
-    }
-  },
+  }
 }));

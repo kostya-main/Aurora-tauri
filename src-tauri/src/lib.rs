@@ -1,6 +1,7 @@
 mod grpc;
 mod ping;
 mod discord;
+mod config;
 
 use declarative_discord_rich_presence::DeclarativeDiscordIpcClient;
 use tauri::Manager;
@@ -25,7 +26,7 @@ pub fn run() {
                 let window = app.get_webview_window("main").unwrap();
                 window.open_devtools();
             }
-            let discord_ipc_client = DeclarativeDiscordIpcClient::new("1214685301793103902");
+            let discord_ipc_client = DeclarativeDiscordIpcClient::new(config::DISCORD.app_id);
 
             discord_ipc_client.enable();
             app.manage(discord_ipc_client);

@@ -1,6 +1,7 @@
 use declarative_discord_rich_presence::{activity::{Activity, Assets, Button, Timestamps}, DeclarativeDiscordIpcClient};
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::State;
+use crate::config;
 
 #[tauri::command]
 pub async fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, status: String) -> Result<(), ()> {
@@ -12,42 +13,42 @@ pub async fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcCli
 
     if status == "default" {
         discord_ipc_client.set_activity(Activity::new()
-            .state("Тестирую лаунчер")
-            .details("Чувак, ты думал здесь что-то будет?")
+            .state(config::DISCORD.default.state)
+            .details(config::DISCORD.default.details)
             .buttons(Vec::from([Button::new("Прекол".to_string(), "https://youtu.be/dQw4w9WgXcQ".to_string())]))
             .assets(Assets::new()
-                .large_image("logo")
-                .large_text("Aurora Launcher")
-                .small_image("logo_mc")
-                .small_text("Minecraft")
+                .large_image(config::DISCORD.default.large_image)
+                .large_text(config::DISCORD.default.large_text)
+                .small_image(config::DISCORD.default.smoll_image)
+                .small_text(config::DISCORD.default.small_text)
             )
             .timestamps(Timestamps::new().start(epoch_secs))
         ).unwrap();
     }
     else if status == "profile" {
         discord_ipc_client.set_activity(Activity::new()
-            .state("Выбираю тестируемый профиль игры")
-            .details("Загружаю {server}")
+            .state(config::DISCORD.profile.state)
+            .details(config::DISCORD.profile.details)
             .buttons(Vec::from([Button::new("Прекол".to_string(), "https://youtu.be/dQw4w9WgXcQ".to_string())]))
             .assets(Assets::new()
-                .large_image("logo")
-                .large_text("Aurora Launcher")
-                .small_image("logo_mc")
-                .small_text("Minecraft")
+                .large_image(config::DISCORD.profile.large_image)
+                .large_text(config::DISCORD.profile.large_text)
+                .small_image(config::DISCORD.profile.smoll_image)
+                .small_text(config::DISCORD.profile.small_text)
             )
             .timestamps(Timestamps::new().start(epoch_secs))
         ).unwrap();
     }
     else if status == "game" {
         discord_ipc_client.set_activity(Activity::new()
-            .state("Играю на тестовом сервере")
-            .details("Играю за {nickname}")
+            .state(config::DISCORD.game.state)
+            .details(config::DISCORD.game.details)
             .buttons(Vec::from([Button::new("Прекол".to_string(), "https://youtu.be/dQw4w9WgXcQ".to_string())]))
             .assets(Assets::new()
-                .large_image("logo")
-                .large_text("Aurora Launcher")
-                .small_image("logo_mc")
-                .small_text("Minecraft")
+                .large_image(config::DISCORD.game.large_image)
+                .large_text(config::DISCORD.game.large_text)
+                .small_image(config::DISCORD.game.smoll_image)
+                .small_text(config::DISCORD.game.small_text)
             )
             .timestamps(Timestamps::new().start(epoch_secs))
         ).unwrap();

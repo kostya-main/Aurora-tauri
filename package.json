@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": " vite build",
+    "dev": "tauri dev",
+    "build": " tauri build",
     "preview": "vite preview",
     "tauri": "tauri"
   },
@@ -15,18 +15,18 @@
     "@tauri-apps/plugin-store": "^2.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.25.1",
+    "react-router-dom": "^7.0.2",
     "recoil": "^0.7.7",
     "skinview3d": "^3.0.1"
   },
   "devDependencies": {
-    "@aurora-launcher/proto": "^0.1.0",
+    "@aurora-launcher/proto": "file:../AuroraLauncher/packages/proto",
     "@tauri-apps/cli": ">=2.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.2.1",
-    "sass": "^1.77.8",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "sass": "^1.82.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.2"
   }
 }
