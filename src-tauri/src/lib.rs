@@ -8,7 +8,12 @@ use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let prevent_default = tauri_plugin_prevent_default::Builder::new()
+        .general_autofill(false)
+        .password_autosave(false)
+        .build();
     tauri::Builder::default()
+        .plugin(prevent_default)
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_system_info::init())
         .plugin(tauri_plugin_store::Builder::new().build())

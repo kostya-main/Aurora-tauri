@@ -30,6 +30,7 @@ mc-query = "1.1.0"
 declarative-discord-rich-presence = { git = "https://github.com/KPidS/declarative-discord-rich-presence", version = "0.1.0" }
 tauri-plugin-system-info = "2"
 tauri-plugin-dialog = "2"
+tauri-plugin-prevent-default = { version = "0.7", features = ["unstable-native-windows"] }
 
 [profile.dev]
 incremental = true # Compile your binary in smaller steps.
