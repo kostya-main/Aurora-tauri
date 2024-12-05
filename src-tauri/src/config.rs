@@ -27,7 +27,6 @@ pub const DISCORD: DiscordRPC = DiscordRPC {
     },
 };
 
-
 pub struct DiscordRPC<'a> {
     pub app_id: &'a str,
     pub default: Activity<'a>,

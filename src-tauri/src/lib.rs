@@ -1,7 +1,7 @@
+mod config;
+mod discord;
 mod grpc;
 mod ping;
-mod discord;
-mod config;
 
 use declarative_discord_rich_presence::DeclarativeDiscordIpcClient;
 use tauri::Manager;
@@ -9,6 +9,8 @@ use tauri::Manager;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_system_info::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
             let _ = args;
@@ -19,7 +21,13 @@ pub fn run() {
                 .set_focus();
         }))
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![ping::ping, grpc::auth, grpc::get_servers, grpc::get_profile, discord::set_activity])
+        .invoke_handler(tauri::generate_handler![
+            ping::ping,
+            grpc::auth,
+            grpc::get_servers,
+            grpc::get_profile,
+            discord::set_activity
+        ])
         .setup(|app| {
             #[cfg(debug_assertions)]
             {

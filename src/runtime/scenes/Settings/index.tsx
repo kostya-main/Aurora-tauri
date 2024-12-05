@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { getVersion } from '@tauri-apps/api/app';
 import { open } from '@tauri-apps/plugin-shell';
-import { SettingsFormat } from '../../../../common/types';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import { open as openDialog } from '@tauri-apps/plugin-dialog';
 import logo from '../../assets/images/logo.png';
 import If from '../../components/If';
 import { MemoryRange } from '../../components/MemoryRange';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import classes from './index.module.sass';
-import { store } from '../../../utils';
+import { getTotalMemory, store } from '../../../utils';
 
 export default function Settings() {
     const {
@@ -23,32 +24,28 @@ export default function Settings() {
         showTitlebarBackBtn();
         hideTitlebarSettingsBtn();
         setTitlebarTitleText('Настройки лаунчера');
-
-        launcherAPI.scenes.settings
-            .getAllFields()
-            .then((res) => {
-                setSettings(res);
-            });
-        launcherAPI.scenes.settings
-            .getTotalMemory()
-            .then((res) => SetTotalMemory(res));
+        
         getVersion().then((ver) => SetVersion(ver));
+        getCurrentWindow().title().then((title) => SetTitle(title));
+        SetTotalMemory(getTotalMemory());
+        store.get('dir').then((dir) => SetDir(dir));
+        store.get('autoConnect').then((autoConnect) => SetAutoConnect(autoConnect));
+        store.get('fullScreen').then((fullScreen) => SetfullScreen(fullScreen));
+        store.get('useMemory').then((useMemory) => SetMemory(useMemory));
+        store.get('startDebug').then((startDebug) => SetStartDebug(startDebug));
     }, []);
 
     const [main, EditButtonMain] = useState(true);
     const [info, EditButtonInfo] = useState(false);
 
     const [totalMemory, SetTotalMemory] = useState(0);
-    const [version, SetVersion] = useState('');
-    const [settings, setSettings] = useState<SettingsFormat>({});
-
-    const setValue = (field: string, value: any) => {
-        setSettings({
-            ...settings,
-            [field]: value,
-        });
-        store.set(field, value);
-    };
+    const [dir, SetDir] = useState('');
+    const [autoConnect, SetAutoConnect] = useState(false);
+    const [fullScreen, SetfullScreen] = useState(false);
+    const [memory, SetMemory] = useState(0);
+    const [startDebug, SetStartDebug] = useState(false);
+    const [version, SetVersion] = useState('v0.0.0');
+    const [title, SetTitle] = useState('v0.0.0');
 
     const Button = (type: string) => {
         switch (type) {
@@ -80,12 +77,11 @@ export default function Settings() {
                     <label className={classes.checkbox}>
                         <input
                             type="checkbox"
-                            checked={settings.fullScreen}
-                            onChange={(e) =>
-                                setValue(
-                                    'fullScreen',
-                                    Boolean(e.target.checked),
-                                )
+                            checked={fullScreen}
+                            onChange={(e) => {
+                                store.set('fullScreen', Boolean(e.target.checked))
+                                SetfullScreen(Boolean(e.target.checked))
+                            }
                             }
                         />
                         <span className={classes.checkboxSwitch}></span>
@@ -94,12 +90,11 @@ export default function Settings() {
                     <label className={classes.checkbox}>
                         <input
                             type="checkbox"
-                            checked={settings.startDebug}
-                            onChange={(e) =>
-                                setValue(
-                                    'startDebug',
-                                    Boolean(e.target.checked),
-                                )
+                            checked={startDebug}
+                            onChange={(e) =>{
+                                store.set('startDebug', Boolean(e.target.checked))
+                                SetStartDebug(Boolean(e.target.checked))
+                            }
                             }
                         />
                         <span className={classes.checkboxSwitch}></span>
@@ -108,39 +103,46 @@ export default function Settings() {
                     <label className={classes.checkbox}>
                         <input
                             type="checkbox"
-                            checked={settings.autoConnect}
-                            onChange={(e) =>
-                                setValue('autoConnect', Boolean(e.target.checked))
+                            checked={autoConnect}
+                            onChange={(e) =>{
+                                store.set('autoConnect', Boolean(e.target.checked))
+                                SetAutoConnect(Boolean(e.target.checked))
+                            }
                             }
                         />
                         <span className={classes.checkboxSwitch}></span>
                         Автоматический вход на сервер
                     </label>
                     <label>
-                        Выделено оперативной памяти: {settings.memory}MB
+                        Выделено оперативной памяти: {memory}MB
                     </label>
                     <br />
                     <MemoryRange
                         limit={totalMemory}
-                        onChange={(e) =>
-                            setValue('memory', Number(e.target.value))
+                        onChange={(e) =>{
+                            store.set('memory', Boolean(e.target.checked))
+                            SetMemory(Number(e.target.value))
                         }
-                        value={settings.memory}
+                        }
+                        value={memory}
                     />
                     <label>
                     Расположение игры
                     </label>
                     <br />
                     <div className={classes.changeDir}>
-                        <button className={classes.openDir} onClick={() => launcherAPI.window.openDir(settings.dir)}>
-                        {settings.dir}
+                        <button className={classes.openDir} onClick={() => launcherAPI.window.openDir(dir)}>
+                        {dir}
                         </button>
                         <button className={classes.editDir} onClick={() => {
-                            launcherAPI.window.editDir();
-                            launcherAPI.scenes.settings
-                            .getAllFields()
-                            .then((res) => {
-                                setSettings(res);
+                            openDialog({
+                                title: 'Выберите директорию для игры',
+                                defaultPath: dir,
+                                directory: true,
+                            }).then((res) => {
+                                console.log(res);
+                                store.set('dir', res);
+                                SetDir(res);
                             });
                         }}>
                             Смена директории
@@ -155,7 +157,7 @@ export default function Settings() {
                     </div>
                     <div className={classes.launcherName}>
                         <center>
-                            <h1>{'window.title'}</h1>
+                            <h1>{title}</h1>
                         </center>
                     </div>
                     <div className={classes.icons}>
