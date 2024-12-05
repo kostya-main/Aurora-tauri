@@ -27,7 +27,7 @@ export default function Settings() {
         
         getVersion().then((ver) => SetVersion(ver));
         getCurrentWindow().title().then((title) => SetTitle(title));
-        SetTotalMemory(getTotalMemory());
+        getTotalMemory().then((mem) => SetTotalMemory(mem));
         store.get('dir').then((dir) => SetDir(dir));
         store.get('autoConnect').then((autoConnect) => SetAutoConnect(autoConnect));
         store.get('fullScreen').then((fullScreen) => SetfullScreen(fullScreen));
@@ -45,7 +45,7 @@ export default function Settings() {
     const [memory, SetMemory] = useState(0);
     const [startDebug, SetStartDebug] = useState(false);
     const [version, SetVersion] = useState('v0.0.0');
-    const [title, SetTitle] = useState('v0.0.0');
+    const [title, SetTitle] = useState('Launcher');
 
     const Button = (type: string) => {
         switch (type) {
@@ -120,7 +120,7 @@ export default function Settings() {
                     <MemoryRange
                         limit={totalMemory}
                         onChange={(e) =>{
-                            store.set('memory', Boolean(e.target.checked))
+                            store.set('useMemory', Number(e.target.value))
                             SetMemory(Number(e.target.value))
                         }
                         }
@@ -131,7 +131,7 @@ export default function Settings() {
                     </label>
                     <br />
                     <div className={classes.changeDir}>
-                        <button className={classes.openDir} onClick={() => launcherAPI.window.openDir(dir)}>
+                        <button className={classes.openDir} onClick={() => open(dir)}>
                         {dir}
                         </button>
                         <button className={classes.editDir} onClick={() => {
@@ -140,7 +140,6 @@ export default function Settings() {
                                 defaultPath: dir,
                                 directory: true,
                             }).then((res) => {
-                                console.log(res);
                                 store.set('dir', res);
                                 SetDir(res);
                             });

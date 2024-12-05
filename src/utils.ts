@@ -15,13 +15,8 @@ export function deleteUserData() {
     sessionStorage.removeItem('userData');
 }
 
-export function getTotalMemory(): number {
-    let memory = 0;
-    totalMemory().then((res) => {
-        res = memory;
-        console.log(res);
-    });
-    const remainingMemMegabytes = Math.floor(memory / 1024 ** 2) / 2;
+export async function getTotalMemory(): Promise<number> {
+    const remainingMemMegabytes = Math.floor(await totalMemory() / 1024 ** 2) / 2;
 
     return (
         remainingMemMegabytes -

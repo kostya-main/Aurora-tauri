@@ -36,7 +36,7 @@ export default function Login() {
         //    });
         invoke('set_activity', {status: "default"})
         store.get('token').then((token) => {
-            if (token!="0")
+            if (token!=undefined)
                 //authToken() 
                 console.log(token);
         });
