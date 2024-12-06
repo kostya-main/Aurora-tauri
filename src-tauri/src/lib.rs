@@ -5,6 +5,7 @@ mod ping;
 
 use declarative_discord_rich_presence::DeclarativeDiscordIpcClient;
 use tauri::Manager;
+use tauri::{menu::{Menu, MenuItem}, tray::TrayIconBuilder};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -40,9 +41,30 @@ pub fn run() {
                 window.open_devtools();
             }
             let discord_ipc_client = DeclarativeDiscordIpcClient::new(config::DISCORD.app_id);
-
             discord_ipc_client.enable();
             app.manage(discord_ipc_client);
+
+            let open_i = MenuItem::with_id(app, "open", "Показать окно", true, None::<&str>)?;
+            let quit_i = MenuItem::with_id(app, "quit", "Закрыть", true, None::<&str>)?;
+            let menu = Menu::with_items(app, &[&open_i, &quit_i])?;
+            let _tray = TrayIconBuilder::new()
+                .icon(app.default_window_icon().unwrap().clone())
+                .menu(&menu)
+                .menu_on_left_click(true)
+                .on_menu_event(|app, event| match event.id.as_ref() {
+                    "quit" => {
+                      app.exit(0);
+                    }
+                    "open" => {
+                        let _ = app.get_webview_window("main")
+                      .expect("no main window")
+                      .set_focus();
+                    }
+                    _ => {
+                      println!("menu item {:?} not handled", event.id);
+                    }
+                })
+                .build(app)?;
             Ok(())
         })
         .run(tauri::generate_context!())
