@@ -45,8 +45,8 @@ fn main() {
             "#[derive(serde::Deserialize, serde::Serialize)]",
         )
         .compile_protos(
-            &["../node_modules/@aurora-launcher/proto/main.proto"],
-            &["../node_modules/@aurora-launcher/proto"],
+            &["../node_modules/@aurora-launcher/proto/packages/proto/main.proto"],
+            &["../node_modules/@aurora-launcher/proto/packages/proto"],
         )
         .unwrap();
     tauri_build::build()
