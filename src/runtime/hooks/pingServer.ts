@@ -12,6 +12,8 @@ export function usePingServer(server?: Server) {
             port: server.server_info.port,
         }).then((message) => {
             setPlayers({ online: (message as Ping).online || 0, max: (message as Ping).max || 0 });
+        }).catch((err) => {
+            console.error(err);
         });
     }, [server]);
 

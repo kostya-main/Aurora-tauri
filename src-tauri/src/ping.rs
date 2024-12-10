@@ -7,8 +7,8 @@ pub struct PingResponse {
 }
 
 #[tauri::command]
-pub async fn ping(host: String, port: u16) -> Result<PingResponse, ()> {
-    let res = status(&host, port).await.unwrap();
+pub async fn ping(host: String, port: u16) -> Result<PingResponse, String> {
+    let res = status(&host, port).await.map_err(|err| err.to_string())?;
     
     Ok(PingResponse {
         online: res.players.online,

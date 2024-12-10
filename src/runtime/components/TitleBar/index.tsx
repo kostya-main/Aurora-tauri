@@ -39,7 +39,7 @@ export default function TitleBar() {
         deleteUserData();
         hideTitlebarSettingsBtn();
         setTitlebarUserText("");
-        store.set('token', "0");
+        store.delete('token');
         navigate('/');
     }
     function toSettings() {

@@ -11,11 +11,11 @@ pub mod proto {
 pub async fn auth(login: String, password: String) -> Result<proto::AuthResponse, String> {
     let mut client = AuroraLauncherServiceClient::connect(config::IP)
         .await
-        .unwrap();
+        .map_err(|err| err.to_string())?;
 
     let request = tonic::Request::new(AuthRequest { login, password });
 
-    let response = client.auth(request).await.unwrap();
+    let response = client.auth(request).await.map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
@@ -24,11 +24,11 @@ pub async fn auth(login: String, password: String) -> Result<proto::AuthResponse
 pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String> {
     let mut client = AuroraLauncherServiceClient::connect(config::IP)
         .await
-        .unwrap();
+        .map_err(|err| err.to_string())?;
 
     let request = tonic::Request::new(ProfileRequest { uuid });
 
-    let response = client.get_profile(request).await.unwrap();
+    let response = client.get_profile(request).await.map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
@@ -37,9 +37,9 @@ pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String>
 pub async fn get_servers() -> Result<proto::ServersResponse, String> {
     let mut client = AuroraLauncherServiceClient::connect(config::IP)
         .await
-        .unwrap();
+        .map_err(|err| err.to_string())?;
 
-    let response = client.get_servers(()).await.unwrap();
+    let response = client.get_servers(()).await.map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
@@ -48,11 +48,11 @@ pub async fn get_servers() -> Result<proto::ServersResponse, String> {
 pub async fn get_update(dir: String) -> Result<proto::UpdateResponse, String> {
     let mut client = AuroraLauncherServiceClient::connect(config::IP)
         .await
-        .unwrap();
+        .map_err(|err| err.to_string())?;
 
     let request = tonic::Request::new(UpdateRequest { dir });
 
-    let response = client.get_updates(request).await.unwrap();
+    let response = client.get_updates(request).await.map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
@@ -60,9 +60,9 @@ pub async fn get_update(dir: String) -> Result<proto::UpdateResponse, String> {
 pub async fn get_token() -> Result<proto::VerifyResponse, String> {
     let mut client = AuroraLauncherServiceClient::connect(config::IP)
         .await
-        .unwrap();
+        .map_err(|err| err.to_string())?;
 
-    let response = client.get_token(()).await.unwrap();
+    let response = client.get_token(()).await.map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }

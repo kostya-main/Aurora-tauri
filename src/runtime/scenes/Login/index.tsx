@@ -62,13 +62,12 @@ export default function Login() {
                 login,
                 password,
             });
-            console.log(userData);
             if (autoLogin) store.set('token', userData.token);
             setUserData(userData);
             setTitlebarUserText(userData.username);
         } catch (error) {
             console.error(error);
-            return showModal('Ошибка авторизации', (error as Error).message);
+            return showModal('Ошибка авторизации', (error as string));
         }
 
         showTitlebarSettingsBtn();
