@@ -19,18 +19,18 @@ tauri-build = { version = "2.0.0", features = [] }
 tonic-build = "0.12.3"
 
 [dependencies]
-tauri = { version = "2.0.0", features = ["tray-icon"] }
-tauri-plugin-shell = "2"
+declarative-discord-rich-presence = { git = "https://github.com/wxllow/declarative-discord-rich-presence", version = "0.1.0" }
+mc-query = "1.1.0"
+prost = "0.13.3"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tonic = "0.12.3"
-prost = "0.13.3"
-tauri-plugin-store = "2"
-mc-query = "1.1.0"
-declarative-discord-rich-presence = { git = "https://github.com/KPidS/declarative-discord-rich-presence", version = "0.1.0" }
-tauri-plugin-system-info = "2"
+tauri = { version = "2.0.0", features = ["tray-icon"] }
 tauri-plugin-dialog = "2"
 tauri-plugin-prevent-default = { version = "1.0.1", features = ["unstable-native-windows"] }
+tauri-plugin-shell = "2"
+tauri-plugin-store = "2"
+tauri-plugin-system-info = "2"
+tonic = "0.12.3"
 
 [profile.dev]
 incremental = true # Compile your binary in smaller steps.

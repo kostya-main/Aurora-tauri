@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useAtom, useAtomValue } from 'jotai';
 
 import classes from './index.module.sass';
 import { modalContent, modalShow, modalTitle } from './states';
 
 export default function Modal() {
-    const [show, setShow] = useRecoilState(modalShow);
-    const content = useRecoilValue(modalContent);
-    const title = useRecoilValue(modalTitle);
+    const [show, setShow] = useAtom(modalShow);
+    const content = useAtomValue(modalContent);
+    const title = useAtomValue(modalTitle);
 
     function closeModal() {
         setShow(false);

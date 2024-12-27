@@ -1,38 +1,26 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
+import { atomWithReset } from 'jotai/utils'
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
 import { getUserData } from '../../../utils';
 
 export const titlebarBackBtn = atom({
-    key: 'titlebar.backBtn',
-    default: {
-        show: false,
-    },
+    show: false
 });
 
 export const titlebarLogout = atom({
-    key: 'titlebar.logout',
-    default: {
-        show: false,
-    },
+    show: false
 });
 
 export const titlebarSettingsBtn = atom({
-    key: 'titlebar.settingsBtn',
-    default: {
-        show: false,
-    },
+    show: false
 });
 
-export const titlebarTitle = atom({
-    key: 'titlebar.title',
-    default: {
-        show: true,
-        text: await getCurrentWindow().title(),
-    },
+export const titlebarTitle = atomWithReset({
+    show: true,
+    text: await getCurrentWindow().title(),
 });
 
-export const titlebarUser = atom({
-    key: 'titlebar.user',
-    default: getUserData().username || '',
-});
+export const titlebarUser = atom(
+    getUserData().username || ''
+);

@@ -1,4 +1,5 @@
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 
 import {
     titlebarBackBtn,
@@ -9,7 +10,7 @@ import {
 } from './states';
 
 export function useTitlebar() {
-    const setTitlebarBackBtnState = useSetRecoilState(titlebarBackBtn);
+    const setTitlebarBackBtnState = useSetAtom(titlebarBackBtn);
 
     function showTitlebarBackBtn() {
         setTitlebarBackBtnState({ show: true });
@@ -19,7 +20,7 @@ export function useTitlebar() {
         setTitlebarBackBtnState({ show: false });
     }
 
-    const setTitlebarLogoutBtnState = useSetRecoilState(titlebarLogout);
+    const setTitlebarLogoutBtnState = useSetAtom(titlebarLogout);
 
     function showTitlebarLogoutBtn() {
         setTitlebarLogoutBtnState({ show: true });
@@ -29,7 +30,7 @@ export function useTitlebar() {
         setTitlebarLogoutBtnState({ show: false });
     }
 
-    const setTitlebarSettingsBtnState = useSetRecoilState(titlebarSettingsBtn);
+    const setTitlebarSettingsBtnState = useSetAtom(titlebarSettingsBtn);
 
     function showTitlebarSettingsBtn() {
         setTitlebarSettingsBtnState({ show: true });
@@ -39,9 +40,9 @@ export function useTitlebar() {
         setTitlebarSettingsBtnState({ show: false });
     }
 
-    const setTitlebarTitleState = useSetRecoilState(titlebarTitle);
+    const setTitlebarTitleState = useSetAtom(titlebarTitle);
 
-    const resetTitlebarTitleState = useResetRecoilState(titlebarTitle);
+    const resetTitlebarTitleState = useResetAtom(titlebarTitle);
 
     function showTitlebarTitle() {
         setTitlebarTitleState((state) => ({ ...state, show: true }));
@@ -59,7 +60,7 @@ export function useTitlebar() {
         resetTitlebarTitleState();
     }
 
-    const setTitlebarUserText = useSetRecoilState(titlebarUser);
+    const setTitlebarUserText = useSetAtom(titlebarUser);
 
     return {
         showTitlebarBackBtn,

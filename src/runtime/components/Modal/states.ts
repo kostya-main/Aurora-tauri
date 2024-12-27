@@ -1,17 +1,8 @@
 import { ReactNode } from 'react';
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
-export const modalShow = atom({
-    key: 'modal.show',
-    default: false,
-});
+export const modalShow = atom(false);
 
-export const modalTitle = atom({
-    key: 'modal.title',
-    default: 'Modal title',
-});
+export const modalTitle = atom('Modal title');
 
-export const modalContent = atom({
-    key: 'modal.content',
-    default: <ReactNode>'Modal content',
-});
+export const modalContent = atom(<ReactNode>'Modal content');

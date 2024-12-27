@@ -1,5 +1,5 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'jotai';
 
 import Layout from './runtime/components/Layout';
 import Login from './runtime/scenes/Login';
@@ -9,7 +9,7 @@ import Settings from './runtime/scenes/Settings';
 
 export default function App() {
     return (
-        <RecoilRoot>
+        <Provider>
             <HashRouter>
                 <Routes>
                     <Route path="/" element={<Layout />}>
@@ -20,6 +20,6 @@ export default function App() {
                     </Route>
                 </Routes>
             </HashRouter>
-        </RecoilRoot>
+        </Provider>
     );
 }

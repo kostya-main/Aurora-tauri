@@ -11,22 +11,22 @@
   },
   "dependencies": {
     "@tauri-apps/api": ">=2.0.0",
-    "@tauri-apps/plugin-dialog": "^2.0.1",
-    "@tauri-apps/plugin-shell": "^2.0.1",
-    "@tauri-apps/plugin-store": "^2.1.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@tauri-apps/plugin-dialog": ">=2.0.0",
+    "@tauri-apps/plugin-shell": ">=2.0.0",
+    "@tauri-apps/plugin-store": ">=2.0.0",
+    "jotai": "^2.11.0",
+    "react-dom": ">=19.0.0",
     "react-router-dom": "^7.0.2",
-    "recoil": "^0.7.7",
-    "skinview3d": "^3.0.1",
-    "tauri-plugin-system-info-api": "^2.0.8"
+    "react": ">=19.0.0",
+    "skinview3d": "^3.1.0",
+    "tauri-plugin-system-info-api": ">=2.0.0"
   },
   "devDependencies": {
     "@aurora-launcher/proto": "git+https://git@github.com:AuroraTeam/AuroraLauncher.git#features/new-net-steck",
     "@tauri-apps/cli": ">=2.0.0",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@types/react-dom": ">=19.0.0",
+    "@types/react": ">=19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "sass": "^1.82.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.2"

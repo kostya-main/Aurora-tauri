@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 
 import { modalContent, modalShow, modalTitle } from './states';
 
 export function useModal() {
-    const setShow = useSetRecoilState(modalShow);
-    const setContent = useSetRecoilState(modalContent);
-    const setTitle = useSetRecoilState(modalTitle);
+    const setShow = useSetAtom(modalShow);
+    const setContent = useSetAtom(modalContent);
+    const setTitle = useSetAtom(modalTitle);
 
     return {
         showModal: (title: string, content: ReactNode) => {
