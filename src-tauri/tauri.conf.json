@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "com.aurora.app",
   "build": {
-    "beforeDevCommand": "npx vite",
+    "beforeDevCommand": "bunx vite",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npx vite build",
+    "beforeBuildCommand": "bunx vite build",
     "frontendDist": "../dist"
   },
   "app": {

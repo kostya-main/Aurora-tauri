@@ -22,7 +22,7 @@
     "tauri-plugin-system-info-api": ">=2.0.0"
   },
   "devDependencies": {
-    "@aurora-launcher/proto": "git+https://git@github.com:AuroraTeam/AuroraLauncher.git#features/new-net-steck",
+    "@aurora-launcher/proto": "git+ssh://github.com/AuroraTeam/AuroraLauncher.git#features/new-net-steck",
     "@tauri-apps/cli": ">=2.0.0",
     "@types/react-dom": ">=19.0.0",
     "@types/react": ">=19.0.0",
