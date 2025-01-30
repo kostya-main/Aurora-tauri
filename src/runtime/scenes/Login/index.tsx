@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { navigate } from "wouter-preact/use-browser-location";
 import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
@@ -20,7 +20,6 @@ export default function Login() {
     const [title, setTitle] = useState('');
     const { showModal } = useModal();
     const { showTitlebarSettingsBtn } = useTitlebar();
-    const navigate = useNavigate();
     const { setTitlebarUserText, hideTitlebarLogoutBtn } = useTitlebar();
 
     useEffect(() => {

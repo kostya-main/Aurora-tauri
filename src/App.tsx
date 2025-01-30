@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Route, Router } from 'wouter-preact';
 import { Provider } from 'jotai';
 
 import Layout from './runtime/components/Layout';
@@ -10,16 +10,14 @@ import Settings from './runtime/scenes/Settings';
 export default function App() {
     return (
         <Provider>
-            <HashRouter>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        <Route index element={<Login />} />
-                        <Route path="/ServersList" element={<ServersList />} />
-                        <Route path="/ServerPanel" element={<ServerPanel />} />
-                        <Route path="/Settings" element={<Settings />} />
-                    </Route>
-                </Routes>
-            </HashRouter>
+                <Router>
+                    <Layout>
+                        <Route path = "/" component={Login} />
+                        <Route path="/ServersList" component={ServersList} />
+                        <Route path="/ServerPanel" component={ServerPanel} />
+                        <Route path="/Settings" component={Settings} />
+                    </Layout>
+                </Router>
         </Provider>
     );
 }

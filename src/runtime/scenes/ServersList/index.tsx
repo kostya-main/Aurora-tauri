@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { navigate } from "wouter-preact/use-browser-location";
 import { invoke } from '@tauri-apps/api/core';
 
 import { ServerButton } from '../../components/ServerButton';
@@ -16,7 +16,6 @@ export default function ServersList() {
     } = useTitlebar();
 
     const [servers, setServers] = useState<Server[]>([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         hideTitlebarBackBtn();

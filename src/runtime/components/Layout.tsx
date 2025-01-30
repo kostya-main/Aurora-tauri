@@ -1,14 +1,13 @@
-import { Outlet } from 'react-router-dom';
-
 import Modal from './Modal';
 import TitleBar from './TitleBar';
+import type { PropsWithChildren } from 'react';
 
-export default function Layout() {
+export default function Layout({children}: PropsWithChildren<{}>) {
     return (
         <>
             <TitleBar />
             <main>
-                <Outlet />
+                {children}
             </main>
             <Modal />
         </>

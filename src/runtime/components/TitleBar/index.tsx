@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { navigate } from "wouter-preact/use-browser-location";
 import { useAtomValue } from 'jotai';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
@@ -22,7 +22,6 @@ export default function TitleBar() {
     const logoutBtn = useAtomValue(titlebarLogout);
     const title = useAtomValue(titlebarTitle);
     const settings = useAtomValue(titlebarSettingsBtn);
-    const navigate = useNavigate();
     const username = useAtomValue(titlebarUser);
     const { setTitlebarUserText, hideTitlebarSettingsBtn } = useTitlebar();
 
@@ -33,7 +32,7 @@ export default function TitleBar() {
         appWindow.close();
     }
     function historyBack() {
-        navigate(-1);
+        window.history.back();
     }
     function logout() {
         deleteUserData();
