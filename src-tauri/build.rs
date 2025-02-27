@@ -36,10 +36,7 @@ fn main() {
             "LibraryRule",
             "#[derive(serde::Deserialize, serde::Serialize)]",
         )
-        .type_attribute(
-            "Server", 
-            "#[derive(serde::Deserialize, serde::Serialize)]"
-        )
+        .type_attribute("Server", "#[derive(serde::Deserialize, serde::Serialize)]")
         .type_attribute(
             "SystemOs",
             "#[derive(serde::Deserialize, serde::Serialize)]",

@@ -28,7 +28,10 @@ pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String>
 
     let request = tonic::Request::new(ProfileRequest { uuid });
 
-    let response = client.get_profile(request).await.map_err(|err| err.to_string())?;
+    let response = client
+        .get_profile(request)
+        .await
+        .map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
@@ -39,7 +42,10 @@ pub async fn get_servers() -> Result<proto::ServersResponse, String> {
         .await
         .map_err(|err| err.to_string())?;
 
-    let response = client.get_servers(()).await.map_err(|err| err.to_string())?;
+    let response = client
+        .get_servers(())
+        .await
+        .map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
@@ -52,7 +58,10 @@ pub async fn get_update(dir: String) -> Result<proto::UpdateResponse, String> {
 
     let request = tonic::Request::new(UpdateRequest { dir });
 
-    let response = client.get_updates(request).await.map_err(|err| err.to_string())?;
+    let response = client
+        .get_updates(request)
+        .await
+        .map_err(|err| err.to_string())?;
 
     Ok(response.into_inner())
 }
