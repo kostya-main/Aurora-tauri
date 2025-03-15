@@ -5,6 +5,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { ServerButton } from '../../components/ServerButton';
 import SkinView from '../../components/SkinView';
 import { useTitlebar } from '../../components/TitleBar/hooks';
+import { useSelectServer } from '../../hooks/selectServer';
 import classes from './index.module.sass';
 
 export default function ServersList() {
@@ -16,6 +17,7 @@ export default function ServersList() {
     } = useTitlebar();
 
     const [servers, setServers] = useState<Server[]>([]);
+    const { setSelectServerState } = useSelectServer();
 
     useEffect(() => {
         hideTitlebarBackBtn();
@@ -29,7 +31,7 @@ export default function ServersList() {
     }, []);
 
     const selectServer = async (server: Server) => {
-        //await launcherAPI.scenes.serversList.selectServer(server);
+        setSelectServerState(server);
         navigate('/ServerPanel');
     };
 

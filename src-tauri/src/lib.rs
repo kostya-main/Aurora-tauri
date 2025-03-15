@@ -1,9 +1,13 @@
 mod config;
 mod discord;
+mod game;
 mod grpc;
 mod ping;
+mod updater;
 
 use declarative_discord_rich_presence::DeclarativeDiscordIpcClient;
+use std::{path::PathBuf, sync::Mutex};
+
 use tauri::{
     menu::{Menu, MenuItem},
     tray::TrayIconBuilder,
@@ -11,6 +15,15 @@ use tauri::{
 use tauri::{App, Manager};
 use tauri_plugin_prevent_default::WindowsOptions;
 use tauri_plugin_store::StoreExt;
+
+#[derive(Default)]
+struct StorageData {
+    storage_dir: PathBuf,
+    assets_dir: PathBuf,
+    clients_dir: PathBuf,
+    libraries_dir: PathBuf,
+    java_dir: PathBuf,
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -32,8 +45,8 @@ pub fn run() {
             ping::ping,
             grpc::auth,
             grpc::get_servers,
-            grpc::get_profile,
-            discord::set_activity
+            discord::set_activity,
+            game::start_game
         ])
         .setup(|app| {
             #[cfg(debug_assertions)]
@@ -41,7 +54,8 @@ pub fn run() {
                 let window = app.get_webview_window("main").unwrap();
                 window.open_devtools();
             }
-            
+
+            init_storage(app);
             start_discord_ipc(app);
             default_store(app);
             spawn_tray_icon(app);
@@ -63,8 +77,10 @@ fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
 
 fn default_store(app: &mut App) {
     let store = app.store("config.json").unwrap();
+    let state = app.state::<Mutex<StorageData>>();
+    let state = state.lock().unwrap();
     if store.is_empty() {
-        store.set("dir", "TEST");
+        store.set("dir", state.storage_dir.clone().to_str().unwrap());
         store.set("autoConnect", false);
         store.set("fullScreen", false);
         store.set("useMemory", 1024);
@@ -101,4 +117,20 @@ fn spawn_tray_icon(app: &mut App) {
         })
         .build(app)
         .unwrap();
+}
+
+fn init_storage(app: &mut App) {
+    app.manage(Mutex::new(StorageData::default()));
+    let state = app.state::<Mutex<StorageData>>();
+    let mut state = state.lock().unwrap();
+    state.storage_dir = app
+        .path()
+        .home_dir()
+        .unwrap()
+        .join(config::STORAGE)
+        .to_owned();
+    state.assets_dir = state.storage_dir.clone().join("assets");
+    state.clients_dir = state.storage_dir.clone().join("clients");
+    state.libraries_dir = state.storage_dir.clone().join("libraries");
+    state.java_dir = state.storage_dir.clone().join("java");
 }

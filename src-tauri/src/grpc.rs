@@ -9,7 +9,7 @@ pub mod proto {
 
 #[tauri::command]
 pub async fn auth(login: String, password: String) -> Result<proto::AuthResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP)
+    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
         .await
         .map_err(|err| err.to_string())?;
 
@@ -21,8 +21,21 @@ pub async fn auth(login: String, password: String) -> Result<proto::AuthResponse
 }
 
 #[tauri::command]
+pub async fn get_servers() -> Result<proto::ServersResponse, String> {
+    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
+        .await
+        .map_err(|err| err.to_string())?;
+
+    let response = client
+        .get_servers(())
+        .await
+        .map_err(|err| err.to_string())?;
+
+    Ok(response.into_inner())
+}
+
 pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP)
+    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
         .await
         .map_err(|err| err.to_string())?;
 
@@ -36,23 +49,8 @@ pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String>
     Ok(response.into_inner())
 }
 
-#[tauri::command]
-pub async fn get_servers() -> Result<proto::ServersResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP)
-        .await
-        .map_err(|err| err.to_string())?;
-
-    let response = client
-        .get_servers(())
-        .await
-        .map_err(|err| err.to_string())?;
-
-    Ok(response.into_inner())
-}
-
-#[tauri::command]
-pub async fn get_update(dir: String) -> Result<proto::UpdateResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP)
+pub async fn get_updates(dir: String) -> Result<proto::UpdateResponse, String> {
+    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
         .await
         .map_err(|err| err.to_string())?;
 
@@ -67,7 +65,7 @@ pub async fn get_update(dir: String) -> Result<proto::UpdateResponse, String> {
 }
 
 pub async fn get_token() -> Result<proto::VerifyResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP)
+    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
         .await
         .map_err(|err| err.to_string())?;
 

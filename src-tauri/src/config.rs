@@ -1,4 +1,6 @@
-pub const IP: &str = "http://127.0.0.1:1371";
+pub const IP_GRPC: &str = "http://127.0.0.1:1371";
+pub const IP_WEB: &str = "http://127.0.0.1:1370";
+pub const STORAGE: &str = ".aurora-launcher";
 pub const DISCORD: DiscordRPC = DiscordRPC {
     app_id: "1214685301793103902",
     default: Activity {

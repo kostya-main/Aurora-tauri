@@ -1,16 +1,18 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { useAtomValue } from 'jotai';
 
 //import { LoadProgress } from '../../../../common/types';
 import If from '../../components/If';
 import { useTitlebar } from '../../components/TitleBar/hooks';
 import { usePingServer } from '../../hooks/pingServer';
 import classes from './index.module.sass';
+import { stateServer } from '../../hooks/selectServer';
 //import { SettingsFormat } from '../../../../common/types';
 
 // TODO Refactoring scene
 export default function ServerPanel() {
-    const [selectedServer, setSelectedServer] = useState<Server>();
+    const selectedServer = useAtomValue(stateServer);
     const players = usePingServer(selectedServer);
 
     const [showConsole, setShowConsole] = useState(false);
@@ -22,13 +24,16 @@ export default function ServerPanel() {
     const progressInfo = useRef() as MutableRefObject<HTMLDivElement>;
     const [settings, setSettings] = useState<SettingsFormat>({});
 
-    const { showTitlebarBackBtn, hideTitlebarBackBtn, 
-        hideTitlebarSettingsBtn, showTitlebarSettingsBtn, 
-        resetTitlebarTitleText, hideTitlebarLogoutBtn } = useTitlebar();
+    const {
+        showTitlebarBackBtn,
+        hideTitlebarBackBtn,
+        hideTitlebarSettingsBtn,
+        showTitlebarSettingsBtn,
+        resetTitlebarTitleText,
+        hideTitlebarLogoutBtn,
+    } = useTitlebar();
 
     useEffect(() => {
-        console.log(selectedServer);
-        //launcherAPI.scenes.serverPanel.getServer().then(setSelectedServer);
         showTitlebarSettingsBtn();
         hideTitlebarLogoutBtn();
         showTitlebarBackBtn();
@@ -94,7 +99,7 @@ export default function ServerPanel() {
     return (
         <div className={classes.window}>
             <div className={classes.info}>
-                <div className={classes.title}>{selectedServer?.server_info.title}</div>
+                <div className={classes.title}>{selectedServer.server_info.title}</div>
                 <div className={classes.status}>
                     <div className={classes.gamers}>
                         Игроков

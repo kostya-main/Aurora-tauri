@@ -1,4 +1,4 @@
-import { Route, Router } from 'wouter-preact';
+import { Route } from 'wouter-preact';
 import { Provider } from 'jotai';
 
 import Layout from './runtime/components/Layout';
@@ -10,14 +10,12 @@ import Settings from './runtime/scenes/Settings';
 export default function App() {
     return (
         <Provider>
-                <Router>
-                    <Layout>
-                        <Route path = "/" component={Login} />
-                        <Route path="/ServersList" component={ServersList} />
-                        <Route path="/ServerPanel" component={ServerPanel} />
-                        <Route path="/Settings" component={Settings} />
-                    </Layout>
-                </Router>
+            <Layout>
+                <Route path="/" component={Login} />
+                <Route path="/ServersList" component={ServersList} />
+                <Route path="/ServerPanel" component={ServerPanel} />
+                <Route path="/Settings" component={Settings} />
+            </Layout>
         </Provider>
     );
 }
