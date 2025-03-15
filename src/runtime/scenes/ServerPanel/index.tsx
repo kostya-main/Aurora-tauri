@@ -47,17 +47,18 @@ export default function ServerPanel() {
     }, []);
 
     const startGame = () => {
-        hideTitlebarSettingsBtn();
-        hideTitlebarBackBtn();
+        //hideTitlebarSettingsBtn();
+        //hideTitlebarBackBtn();
         if (settings.startDebug) setShowConsole(true);
         consoleRef.current?.replaceChildren();
-        setGameStarted(true);
+        //setGameStarted(true);
         //launcherAPI.scenes.serverPanel.startGame(
         //    textToConsole,
         //    progress,
         //    stopGame,
         //);
         invoke('set_activity', {status: "game"});
+        invoke('start_game', {server: selectedServer});
     };
 
     const stopGame = () => {
