@@ -10,7 +10,9 @@ pub async fn start_game(
     server: grpc::proto::Server,
 ) -> Result<(), ()> {
     let profile = grpc::get_profile(server.profile_uuid).await.unwrap();
-    println!("start game");
-    updater::download_assets(state, profile.asset_index).await;
+    println!("Assets downloading...");
+    updater::download_assets(state.clone(), profile.asset_index.clone()).await;
+    println!("Game files downloading...");
+    updater::download_game_files(state, profile).await;
     Ok(())
 }
