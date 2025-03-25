@@ -51,16 +51,16 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
             &dir_hash,
             &object.1["hash"]
         );
-        let resp = client
-            .get(object_url)
-            .send()
-            .await
-            .unwrap()
-            .bytes()
-            .await
-            .unwrap();
         let object_dir = assets_dir.clone().join("objects").join(dir_hash).join(object.1["hash"].as_str().unwrap());
         if !object_dir.exists() {
+            let resp = client
+                .get(object_url)
+                .send()
+                .await
+                .unwrap()
+                .bytes()
+                .await
+                .unwrap();
             create_dir_all(object_dir.clone().parent().unwrap()).unwrap();
             write(
                 &object_dir,
