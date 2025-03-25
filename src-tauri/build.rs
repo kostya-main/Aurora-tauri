@@ -9,38 +9,14 @@ fn main() {
             "#[derive(serde::Deserialize, serde::Serialize)]",
         )
         .type_attribute(
-            "ProfileResponse",
-            "#[derive(serde::Deserialize, serde::Serialize)]",
-        )
-        .type_attribute(
             "ServersResponse",
-            "#[derive(serde::Deserialize, serde::Serialize)]",
-        )
-        .type_attribute(
-            "UpdateResponse",
-            "#[derive(serde::Deserialize, serde::Serialize)]",
-        )
-        .type_attribute(
-            "HashedFile",
-            "#[derive(serde::Deserialize, serde::Serialize)]",
-        )
-        .type_attribute(
-            "ProfileLibrary",
             "#[derive(serde::Deserialize, serde::Serialize)]",
         )
         .type_attribute(
             "ServerConfig",
             "#[derive(serde::Deserialize, serde::Serialize)]",
         )
-        .type_attribute(
-            "LibraryRule",
-            "#[derive(serde::Deserialize, serde::Serialize)]",
-        )
         .type_attribute("Server", "#[derive(serde::Deserialize, serde::Serialize)]")
-        .type_attribute(
-            "SystemOs",
-            "#[derive(serde::Deserialize, serde::Serialize)]",
-        )
         .compile_protos(
             &["../node_modules/@aurora-launcher/proto/packages/proto/main.proto"],
             &["../node_modules/@aurora-launcher/proto/packages/proto"],

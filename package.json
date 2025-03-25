@@ -11,23 +11,23 @@
     "fmt": "cargo fmt --all --manifest-path ./src-tauri/Cargo.toml"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2.3.0",
+    "@tauri-apps/api": "^2.4.0",
     "@tauri-apps/plugin-dialog": "^2.2.0",
     "@tauri-apps/plugin-shell": "^2.2.0",
     "@tauri-apps/plugin-store": "^2.2.0",
-    "jotai": "^2.12.1",
-    "preact": "^10.26.3",
+    "jotai": "^2.12.2",
+    "preact": "^10.26.4",
     "skinview3d": "^3.1.0",
-    "tauri-plugin-system-info-api": "^2.0.9",
-    "wouter-preact": "^3.6.0"
+    "tauri-plugin-system-info-api": "^2.0.10",
+    "wouter-preact": "^3.6.1"
   },
   "devDependencies": {
     "@aurora-launcher/proto": "git+ssh://github.com/AuroraTeam/AuroraLauncher.git#features/new-net-steck",
     "@preact/preset-vite": "^2.10.1",
-    "@tauri-apps/cli": "^2.3.0",
-    "sass": "^1.85.1",
-    "typescript": "^5.7.3",
-    "vite": "^6.2.0",
+    "@tauri-apps/cli": "^2.4.0",
+    "sass": "^1.86.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3",
     "vite-plugin-minipic": "^1.2.0"
   }
 }

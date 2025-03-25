@@ -13,6 +13,8 @@ pub async fn start_game(
     println!("Assets downloading...");
     updater::download_assets(state.clone(), profile.asset_index.clone()).await;
     println!("Game files downloading...");
-    updater::download_game_files(state, profile).await;
+    updater::download_game_files(state.clone(), profile.client_dir).await;
+    println!("Java downloading...");
+    updater::download_java(state, profile.java_version).await;
     Ok(())
 }
