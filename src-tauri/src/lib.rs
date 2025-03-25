@@ -13,7 +13,7 @@ use tauri::{
     tray::TrayIconBuilder,
 };
 use tauri::{App, Manager};
-use tauri_plugin_prevent_default::WindowsOptions;
+use tauri_plugin_prevent_default::{Flags, WindowsOptions};
 use tauri_plugin_store::StoreExt;
 
 #[derive(Default)]
@@ -72,6 +72,7 @@ fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
             general_autofill: false,
             password_autosave: false,
         })
+        .with_flags(Flags::all())
         .build()
 }
 

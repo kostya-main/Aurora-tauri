@@ -59,17 +59,15 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
             .bytes()
             .await
             .unwrap();
-
-        create_dir_all(assets_dir.clone().join("objects").join(dir_hash)).unwrap();
-        write(
-            assets_dir
-                .clone()
-                .join("objects")
-                .join(dir_hash)
-                .join(object.1["hash"].as_str().unwrap()),
-            resp,
-        )
-        .unwrap();
+        let object_dir = assets_dir.clone().join("objects").join(dir_hash).join(object.1["hash"].as_str().unwrap());
+        if !object_dir.exists() {
+            create_dir_all(object_dir.clone().parent().unwrap()).unwrap();
+            write(
+                &object_dir,
+                resp,
+            ).unwrap();
+            println!("{:?}", object_dir);
+        }
     }
 }
 
@@ -108,29 +106,32 @@ pub async fn download_java(state: State<'_, Mutex<StorageData>>, java_version: i
         let state = state.lock().unwrap();
         java_dir = state.java_dir.join(java_version.to_string());
     }
-    let resp = client
-        .get(url)
-        .send()
-        .await
-        .unwrap()
-        .json::<Vec<JavaData>>()
-        .await
-        .unwrap();
-    let resp = client
-        .get(resp[0].download_url.clone())
-        .send()
-        .await
-        .unwrap()
-        .bytes()
-        .await
-        .unwrap();
+    if !java_dir.exists() {
+        let resp = client
+            .get(url)
+            .send()
+            .await
+            .unwrap()
+            .json::<Vec<JavaData>>()
+            .await
+            .unwrap();
+        let resp = client
+            .get(resp[0].download_url.clone())
+            .send()
+            .await
+            .unwrap()
+            .bytes()
+            .await
+            .unwrap();
 
-    let mut archive = zip::ZipArchive::new(Cursor::new(resp)).unwrap();
-    let export = archive.extract(java_dir);
-    println!("{:?}", export);
+        let mut archive = zip::ZipArchive::new(Cursor::new(resp)).unwrap();
+        let export = archive.extract(java_dir);
+        println!("{:?}", export);
+    }
+    println!("Java installed!");
 }
 
-fn arch(arch: &str) -> std::string::String {
+fn arch(arch: &str) -> String {
     match arch {
         "x86" => "i686".to_string(),
         "x86_64" => "x64".to_string(),
