@@ -1,13 +1,19 @@
+use crate::StorageData;
 use crate::config;
 use crate::grpc;
-use crate::StorageData;
+use crate::grpc::proto::ProfileLibrary;
+//use crate::matcher;
 use reqwest::Url;
 use serde::Deserialize;
 use serde_json::Value;
+use sha1::{Digest, Sha1};
 use std::env::consts::ARCH;
 use std::env::consts::OS;
+use std::fmt::Write;
+use std::fs::File;
 use std::fs::create_dir_all;
 use std::fs::write;
+use std::io;
 use std::io::Cursor;
 use std::sync::Mutex;
 use tauri::State;
@@ -45,13 +51,18 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
 
     for object in deserialized["objects"].as_object().unwrap() {
         let dir_hash = &object.1["hash"].as_str().unwrap()[0..2];
-        let object_url = format!(
-            "{}/files/assets/objects/{}/{}",
-            config::IP_WEB,
-            &dir_hash,
-            &object.1["hash"]
-        );
-        let object_dir = assets_dir.clone().join("objects").join(dir_hash).join(object.1["hash"].as_str().unwrap());
+        let mut object_url = Url::parse(config::IP_WEB).unwrap();
+        object_url = object_url
+            .join(format!("{}/files/assets/objects/{}/", config::IP_WEB, &dir_hash,).as_str())
+            .unwrap();
+        object_url = object_url
+            .join(&object.1["hash"].as_str().unwrap())
+            .unwrap();
+        let object_dir = assets_dir
+            .clone()
+            .join("objects")
+            .join(dir_hash)
+            .join(object.1["hash"].as_str().unwrap());
         if !object_dir.exists() {
             let resp = client
                 .get(object_url)
@@ -62,19 +73,12 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
                 .await
                 .unwrap();
             create_dir_all(object_dir.clone().parent().unwrap()).unwrap();
-            write(
-                &object_dir,
-                resp,
-            ).unwrap();
-            println!("{:?}", object_dir);
+            write(&object_dir, resp).unwrap();
         }
     }
 }
 
-pub async fn download_game_files(
-    state: State<'_, Mutex<StorageData>>,
-    client_dir: String,
-) {
+pub async fn download_game_files(state: State<'_, Mutex<StorageData>>, client_dir: String) {
     let game_hash = grpc::get_updates(client_dir).await.unwrap();
     let game_url = format!("{}/files/clients", config::IP_WEB);
     let client = reqwest::Client::new();
@@ -85,7 +89,6 @@ pub async fn download_game_files(
     }
     for file in game_hash.hashed_file {
         let url = Url::parse(&(game_url.as_str().to_owned() + file.path.as_str())).unwrap();
-        let resp = client.get(url).send().await.unwrap().bytes().await.unwrap();
         file.path
             .split(&prefix_read(file.path.chars().nth(0).unwrap()))
             .collect::<Vec<&str>>()
@@ -93,13 +96,31 @@ pub async fn download_game_files(
             .for_each(|f| {
                 clients_dir.push(f);
             });
-        create_dir_all(clients_dir.clone().parent().unwrap()).unwrap();
-        write(&clients_dir, resp).unwrap();
+        if !clients_dir.exists() {
+            let resp = client.get(url).send().await.unwrap().bytes().await.unwrap();
+            create_dir_all(clients_dir.clone().parent().unwrap()).unwrap();
+            write(&clients_dir, resp).unwrap();
+        } else {
+            let mut open = File::open(&clients_dir).unwrap();
+            let mut hasher = Sha1::new();
+            io::copy(&mut open, &mut hasher).unwrap();
+            let hash = bytes_to_hex(&hasher.finalize());
+            if hash != file.sha1 {
+                let resp = client.get(url).send().await.unwrap().bytes().await.unwrap();
+                create_dir_all(clients_dir.clone().parent().unwrap()).unwrap();
+                write(&clients_dir, resp).unwrap();
+            }
+        }
     }
 }
 
 pub async fn download_java(state: State<'_, Mutex<StorageData>>, java_version: i32) {
-    let url = format!("https://api.azul.com/metadata/v1/zulu/packages/?java_version={}&os={}&arch={}&archive_type=zip&java_package_type=jre&javafx_bundled=false&latest=true&release_status=ga&page=1&page_size=1", java_version, OS, arch(ARCH));
+    let url = format!(
+        "https://api.azul.com/metadata/v1/zulu/packages/?java_version={}&os={}&arch={}&archive_type=zip&java_package_type=jre&javafx_bundled=false&latest=true&release_status=ga&page=1&page_size=1",
+        java_version,
+        OS,
+        arch(ARCH)
+    );
     let client = reqwest::Client::new();
     let java_dir;
     {
@@ -124,6 +145,7 @@ pub async fn download_java(state: State<'_, Mutex<StorageData>>, java_version: i
             .await
             .unwrap();
 
+        println!("Unpacking Java");
         let mut archive = zip::ZipArchive::new(Cursor::new(resp)).unwrap();
         let export = archive.extract(java_dir);
         println!("{:?}", export);
@@ -147,6 +169,14 @@ fn prefix_read(start_char: char) -> String {
         '/' => "/".to_string(),
         _ => todo!(),
     }
+}
+
+fn bytes_to_hex(bytes: &[u8]) -> String {
+    let mut hex_string = String::with_capacity(bytes.len() * 2);
+    for byte in bytes {
+        write!(hex_string, "{:02x}", byte).unwrap();
+    }
+    hex_string
 }
 
 #[derive(Deserialize)]

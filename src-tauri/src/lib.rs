@@ -4,15 +4,16 @@ mod game;
 mod grpc;
 mod ping;
 mod updater;
+//mod matcher;
 
 use declarative_discord_rich_presence::DeclarativeDiscordIpcClient;
 use std::{path::PathBuf, sync::Mutex};
 
+use tauri::{App, Manager};
 use tauri::{
     menu::{Menu, MenuItem},
     tray::TrayIconBuilder,
 };
-use tauri::{App, Manager};
 use tauri_plugin_prevent_default::{Flags, WindowsOptions};
 use tauri_plugin_store::StoreExt;
 

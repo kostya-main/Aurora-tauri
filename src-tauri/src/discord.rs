@@ -1,7 +1,7 @@
 use crate::config;
 use declarative_discord_rich_presence::{
-    activity::{Activity, Assets, Button, Timestamps},
     DeclarativeDiscordIpcClient,
+    activity::{Activity, Assets, Button, Timestamps},
 };
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::State;

@@ -20,7 +20,7 @@ tonic-build = "0.12.3"
 
 [dependencies]
 declarative-discord-rich-presence = { git = "https://github.com/wxllow/declarative-discord-rich-presence", version = "0.1.0" }
-mc-query = "1.1.0"
+mc-query = "2.0.0"
 prost = "0.13.3"
 reqwest = { version = "0.12.12", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
@@ -33,6 +33,7 @@ tauri-plugin-store = "2"
 tauri-plugin-system-info = "2"
 tonic = "0.12.3"
 zip = { version = "2", features = ["deflate"], default-features = false}
+sha1 = "0.10"
 
 [profile.dev]
 incremental = true # Compile your binary in smaller steps.
