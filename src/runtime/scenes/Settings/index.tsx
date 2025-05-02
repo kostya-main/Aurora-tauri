@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getVersion } from '@tauri-apps/api/app';
-import { open } from '@tauri-apps/plugin-shell';
+import { revealItemInDir, openUrl } from '@tauri-apps/plugin-opener';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { open as openDialog } from '@tauri-apps/plugin-dialog';
 import logo from '../../assets/images/logo.png';
@@ -131,7 +131,7 @@ export default function Settings() {
                     </label>
                     <br />
                     <div className={classes.changeDir}>
-                        <button className={classes.openDir} onClick={() => open(dir)}>
+                        <button className={classes.openDir} onClick={() => revealItemInDir(dir)}>
                         {dir}
                         </button>
                         <button className={classes.editDir} onClick={() => {
@@ -140,8 +140,10 @@ export default function Settings() {
                                 defaultPath: dir,
                                 directory: true,
                             }).then((res) => {
-                                store.set('dir', res);
-                                SetDir(res);
+                                if (res) {
+                                    store.set('dir', res);
+                                    SetDir(res);
+                                }
                             });
                         }}>
                             Смена директории
@@ -162,7 +164,7 @@ export default function Settings() {
                     <div className={classes.icons}>
                         <button
                             onClick={() =>
-                                open(
+                                openUrl(
                                     'https://www.youtube.com/@AuroraTeamRu',
                                 )
                             }
@@ -176,7 +178,7 @@ export default function Settings() {
                         </button>
                         <button
                             onClick={() =>
-                                open(
+                                openUrl(
                                     'https://discord.gg/2NvYTcv',
                                 )
                             }
@@ -190,7 +192,7 @@ export default function Settings() {
                         </button>
                         <button
                             onClick={() =>
-                                open(
+                                openUrl(
                                     'https://aurora-launcher.ru/',
                                 )
                             }
@@ -204,7 +206,7 @@ export default function Settings() {
                         </button>
                         <button
                             onClick={() =>
-                                open(
+                                openUrl(
                                     'https://github.com/AuroraTeam/AuroraLauncher',
                                 )
                             }
