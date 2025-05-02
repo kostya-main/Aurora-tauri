@@ -1,7 +1,17 @@
-# Tauri + React + Typescript
+<p align="center"><img src="./src/runtime/assets/images/logo.png" width="200px" height="200px"></p>
+<h1 align="center">AuroraLauncher Tauri</h1>
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+Данный проект создавался с целью перехода с Electron на Tauri. \
+[Ссылка на основную реализацию](https://github.com/AuroraTeam/Launcher)
 
-## Recommended IDE Setup
+## Разработка
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+Если вы хотите подержать разработку или посмотреть локально на свои изменения то прочтите этот [раздел](https://github.com/kostya-main/Aurora-tauri/tree/master/docs/DEVELOPMENT.md).
+
+## Миграция на Tauri
+
+Если вы надумывайте переходить на данаю реализацию то вам нужно прочесть этот [раздел](https://github.com/kostya-main/Aurora-tauri/tree/master/docs/RUNNING.md).
+
+## LauncherServer
+
+Для данного проекта не подойдёт стандартный LauncherServer, поэтому вы должны сами собрать его из исходников. Про это описано в этом [разделе](https://github.com/kostya-main/Aurora-tauri/tree/master/docs/LAUNCHERSERVER.md).
