@@ -1,8 +1,8 @@
-use crate::StorageData;
 use crate::config;
 use crate::grpc;
 use crate::grpc::proto::ProfileLibrary;
-//use crate::matcher;
+use crate::matcher;
+use crate::StorageData;
 use reqwest::Url;
 use serde::Deserialize;
 use serde_json::Value;
@@ -10,9 +10,9 @@ use sha1::{Digest, Sha1};
 use std::env::consts::ARCH;
 use std::env::consts::OS;
 use std::fmt::Write;
-use std::fs::File;
 use std::fs::create_dir_all;
 use std::fs::write;
+use std::fs::File;
 use std::io;
 use std::io::Cursor;
 use std::sync::Mutex;
@@ -38,10 +38,9 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
         let state = state.lock().unwrap();
         assets_dir = state.assets_dir.to_owned();
     }
-    create_dir_all(assets_dir.clone().join("indexes")).unwrap();
+    create_dir_all(&assets_dir.join("indexes")).unwrap();
     write(
-        assets_dir
-            .clone()
+        &assets_dir
             .join("indexes")
             .join(format!("{}.json", assets_index)),
         resp.as_bytes(),
@@ -72,43 +71,65 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
                 .bytes()
                 .await
                 .unwrap();
-            create_dir_all(object_dir.clone().parent().unwrap()).unwrap();
+            create_dir_all(&object_dir.parent().unwrap()).unwrap();
             write(&object_dir, resp).unwrap();
         }
     }
+}
+
+pub async fn download_libraries(
+    state: State<'_, Mutex<StorageData>>,
+    libraries: Vec<ProfileLibrary>,
+) -> Vec<ProfileLibrary> {
+    let lib: Vec<ProfileLibrary> = libraries
+        .into_iter()
+        .filter(|lib| matcher::match_lib(lib.rules.clone()))
+        .collect();
+    let lib_url = format!("{}/files/libraries/", config::IP_WEB);
+    let client = reqwest::Client::new();
+    let libraries_dir;
+    {
+        let state = state.lock().unwrap();
+        libraries_dir = state.libraries_dir.to_owned();
+    }
+    println!("{:?}", libraries_dir);
+    for file in &lib {
+        let url = Url::parse(&(lib_url.as_str().to_owned() + file.path.as_str())).unwrap();
+        let dir = libraries_dir.join(&file.path);
+        if !dir.exists() {
+            let resp = client.get(url).send().await.unwrap().bytes().await.unwrap();
+            create_dir_all(&dir.parent().unwrap()).unwrap();
+            write(&dir, resp).unwrap();
+        }
+    }
+    lib
 }
 
 pub async fn download_game_files(state: State<'_, Mutex<StorageData>>, client_dir: String) {
     let game_hash = grpc::get_updates(client_dir).await.unwrap();
     let game_url = format!("{}/files/clients", config::IP_WEB);
     let client = reqwest::Client::new();
-    let mut clients_dir;
+    let clients_dir;
     {
         let state = state.lock().unwrap();
         clients_dir = state.clients_dir.to_owned();
     }
     for file in game_hash.hashed_file {
         let url = Url::parse(&(game_url.as_str().to_owned() + file.path.as_str())).unwrap();
-        file.path
-            .split(&prefix_read(file.path.chars().nth(0).unwrap()))
-            .collect::<Vec<&str>>()
-            .iter()
-            .for_each(|f| {
-                clients_dir.push(f);
-            });
-        if !clients_dir.exists() {
+        let dir = clients_dir.join(&file.path[1..file.path.len()]);
+        if !dir.exists() {
             let resp = client.get(url).send().await.unwrap().bytes().await.unwrap();
-            create_dir_all(clients_dir.clone().parent().unwrap()).unwrap();
-            write(&clients_dir, resp).unwrap();
+            create_dir_all(&dir.parent().unwrap()).unwrap();
+            write(&dir, resp).unwrap();
         } else {
-            let mut open = File::open(&clients_dir).unwrap();
+            let mut open = File::open(&dir).unwrap();
             let mut hasher = Sha1::new();
             io::copy(&mut open, &mut hasher).unwrap();
             let hash = bytes_to_hex(&hasher.finalize());
             if hash != file.sha1 {
                 let resp = client.get(url).send().await.unwrap().bytes().await.unwrap();
-                create_dir_all(clients_dir.clone().parent().unwrap()).unwrap();
-                write(&clients_dir, resp).unwrap();
+                create_dir_all(&dir.parent().unwrap()).unwrap();
+                write(&dir, resp).unwrap();
             }
         }
     }
@@ -159,14 +180,6 @@ fn arch(arch: &str) -> String {
         "x86_64" => "x64".to_string(),
         "aarch64" => "aarch64".to_string(),
         "arm" => "aarch64".to_string(),
-        _ => todo!(),
-    }
-}
-
-fn prefix_read(start_char: char) -> String {
-    match start_char {
-        '\\' => "\\".to_string(),
-        '/' => "/".to_string(),
         _ => todo!(),
     }
 }
