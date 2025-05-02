@@ -1,8 +1,8 @@
 use crate::config;
+use proto::aurora_launcher_service_client::AuroraLauncherServiceClient;
 use proto::AuthRequest;
 use proto::ProfileRequest;
 use proto::UpdateRequest;
-use proto::aurora_launcher_service_client::AuroraLauncherServiceClient;
 pub mod proto {
     tonic::include_proto!("aurora_launcher.rpc");
 }

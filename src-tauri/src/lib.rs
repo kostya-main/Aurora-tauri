@@ -2,18 +2,18 @@ mod config;
 mod discord;
 mod game;
 mod grpc;
+mod matcher;
 mod ping;
 mod updater;
-//mod matcher;
 
 use declarative_discord_rich_presence::DeclarativeDiscordIpcClient;
 use std::{path::PathBuf, sync::Mutex};
 
-use tauri::{App, Manager};
 use tauri::{
     menu::{Menu, MenuItem},
     tray::TrayIconBuilder,
 };
+use tauri::{App, Manager};
 use tauri_plugin_prevent_default::{Flags, WindowsOptions};
 use tauri_plugin_store::StoreExt;
 
@@ -29,6 +29,7 @@ struct StorageData {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .plugin(prevent_default())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_system_info::init())
