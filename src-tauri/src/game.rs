@@ -13,10 +13,17 @@ pub async fn start_game(
     println!("Assets downloading...");
     updater::download_assets(state.clone(), profile.asset_index).await;
     println!("Libraries downloading...");
-    let lib = updater::download_libraries(state.clone(), profile.libraries).await;
+    let download_lib = updater::download_libraries(state.clone(), profile.libraries).await;
     println!("Game files downloading...");
     updater::download_game_files(state.clone(), profile.client_dir).await;
     println!("Java downloading...");
-    updater::download_java(state, profile.java_version).await;
+    updater::download_java(state.clone(), profile.java_version).await;
+    println!("Auth injector downloading...");
+    updater::download_auth_injector(state.clone()).await;
     Ok(())
+}
+
+
+fn start_process(state: State<'_, Mutex<StorageData>>) {
+
 }

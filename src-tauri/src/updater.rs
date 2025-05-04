@@ -174,6 +174,37 @@ pub async fn download_java(state: State<'_, Mutex<StorageData>>, java_version: i
     println!("Java installed!");
 }
 
+pub async fn download_auth_injector(state: State<'_, Mutex<StorageData>>) {
+    let auth_lib;
+    {
+        let state = state.lock().unwrap();
+        auth_lib = state.storage_dir.join("authlib.jar");
+    }
+    if !auth_lib.exists() {
+        let api_url = "https://authlib-injector.yushi.moe/artifact/latest.json";
+        let client = reqwest::Client::new();
+        let resp = client
+            .get(api_url)
+            .send()
+            .await
+            .unwrap()
+            .json::<AuthLibData>()
+            .await
+            .unwrap();
+        let resp = client
+            .get(resp.download_url)
+            .send()
+            .await
+            .unwrap()
+            .bytes()
+            .await
+            .unwrap();
+        create_dir_all(&auth_lib.parent().unwrap()).unwrap();
+        write(&auth_lib, resp).unwrap();
+
+    }
+}
+
 fn arch(arch: &str) -> String {
     match arch {
         "x86" => "i686".to_string(),
@@ -194,5 +225,10 @@ fn bytes_to_hex(bytes: &[u8]) -> String {
 
 #[derive(Deserialize)]
 struct JavaData {
+    download_url: Url,
+}
+
+#[derive(Deserialize)]
+struct AuthLibData {
     download_url: Url,
 }
