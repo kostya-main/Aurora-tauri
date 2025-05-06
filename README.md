@@ -1,4 +1,4 @@
-<p align="center"><img src="./src/runtime/assets/images/logo.png" width="200px" height="200px"></p>
+<p align="center"><img src="./frontend/runtime/assets/images/logo.png" width="200px" height="200px"></p>
 <h1 align="center">AuroraLauncher Tauri</h1>
 
 Данный проект создавался с целью перехода с Electron на Tauri. \
