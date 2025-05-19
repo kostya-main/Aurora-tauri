@@ -27,4 +27,4 @@ npm run build:prod -w packages/server
 npm run build:bin -w packages/server
 ```
 
-После этого вы проходите в папку `packages\server\dist` в котором будут лежать скомпилированные файлы.
+После этого вы проходите в папку `packages\server\dist` в котором будут лежать скомпилированный LauncherServer.

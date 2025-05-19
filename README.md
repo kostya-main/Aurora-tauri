@@ -10,7 +10,7 @@
 
 ## Миграция на Tauri
 
-Если вы надумывайте переходить на данаю реализацию то вам нужно прочесть этот [раздел](https://github.com/kostya-main/Aurora-tauri/tree/master/docs/RUNNING.md).
+Если вы надумывайте переходить на данаю реализацию то вам нужно прочесть этот [раздел](https://github.com/kostya-main/Aurora-tauri/tree/master/docs/USE.md).
 
 ## LauncherServer
 
