@@ -92,7 +92,7 @@ fn default_store(app: &mut App) {
 }
 
 fn start_discord_ipc(app: &mut App) {
-    let discord_ipc_client = DeclarativeDiscordIpcClient::new(config::DISCORD.app_id);
+    let discord_ipc_client = DeclarativeDiscordIpcClient::new(config::CONFIG.discord.app_id.as_str());
     discord_ipc_client.enable();
     app.manage(discord_ipc_client);
 }
@@ -130,7 +130,7 @@ fn init_storage(app: &mut App) {
         .path()
         .home_dir()
         .unwrap()
-        .join(config::STORAGE)
+        .join(config::CONFIG.storage.as_str())
         .to_owned();
     state.assets_dir = state.storage_dir.clone().join("assets");
     state.clients_dir = state.storage_dir.clone().join("clients");

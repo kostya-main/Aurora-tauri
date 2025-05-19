@@ -1,4 +1,4 @@
-use crate::config;
+use crate::config::CONFIG;
 use crate::grpc;
 use crate::grpc::proto::ProfileLibrary;
 use crate::matcher;
@@ -21,7 +21,7 @@ use tauri::State;
 pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index: String) {
     let asset_url = format!(
         "{}/files/assets/indexes/{}.json",
-        config::IP_WEB,
+        CONFIG.ip_web,
         assets_index
     );
     let client = reqwest::Client::new();
@@ -50,9 +50,9 @@ pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index:
 
     for object in deserialized["objects"].as_object().unwrap() {
         let dir_hash = &object.1["hash"].as_str().unwrap()[0..2];
-        let mut object_url = Url::parse(config::IP_WEB).unwrap();
+        let mut object_url = Url::parse(CONFIG.ip_web.as_str()).unwrap();
         object_url = object_url
-            .join(format!("{}/files/assets/objects/{}/", config::IP_WEB, &dir_hash,).as_str())
+            .join(format!("{}/files/assets/objects/{}/", CONFIG.ip_web, &dir_hash,).as_str())
             .unwrap();
         object_url = object_url
             .join(&object.1["hash"].as_str().unwrap())
@@ -85,7 +85,7 @@ pub async fn download_libraries(
         .into_iter()
         .filter(|lib| matcher::match_lib(lib.rules.clone()))
         .collect();
-    let lib_url = format!("{}/files/libraries/", config::IP_WEB);
+    let lib_url = format!("{}/files/libraries/", CONFIG.ip_web);
     let client = reqwest::Client::new();
     let libraries_dir;
     {
@@ -107,7 +107,7 @@ pub async fn download_libraries(
 
 pub async fn download_game_files(state: State<'_, Mutex<StorageData>>, client_dir: String) {
     let game_hash = grpc::get_updates(client_dir).await.unwrap();
-    let game_url = format!("{}/files/clients", config::IP_WEB);
+    let game_url = format!("{}/files/clients", CONFIG.ip_web);
     let client = reqwest::Client::new();
     let clients_dir;
     {

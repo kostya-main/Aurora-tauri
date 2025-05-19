@@ -1,0 +1,32 @@
+{
+    "ip_grpc": "http://127.0.0.1:1371",
+    "ip_web": "http://127.0.0.1:1370",
+    "storage": ".aurora-launcher",
+    "discord": {
+        "app_id": "1214685301793103902",
+        "default": {
+            "state": "Тестирую лаунчер",
+            "details": "Чувак, ты думал здесь что-то будет?",
+            "large_image": "logo",
+            "smoll_image": "logo_mc",
+            "large_text": "Aurora Launcher",
+            "small_text": "Minecraft"
+        },
+        "profile": {
+            "state": "Выбираю тестируемый профиль игры",
+            "details": "Загружаю {server}",
+            "large_image": "logo",
+            "smoll_image": "logo_mc",
+            "large_text": "Aurora Launcher",
+            "small_text": "Minecraft"
+        },
+        "game": {
+            "state": "Играю на тестовом сервере",
+            "details": "Играю за {nickname}",
+            "large_image": "logo",
+            "smoll_image": "logo_mc",
+            "large_text": "Aurora Launcher",
+            "small_text": "Minecraft"
+        }
+    }
+}

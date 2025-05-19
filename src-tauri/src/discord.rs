@@ -1,4 +1,4 @@
-use crate::config;
+use crate::config::CONFIG;
 use declarative_discord_rich_presence::{
     activity::{Activity, Assets, Button, Timestamps},
     DeclarativeDiscordIpcClient,
@@ -20,18 +20,18 @@ pub fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, 
             discord_ipc_client
                 .set_activity(
                     Activity::new()
-                        .state(config::DISCORD.default.state)
-                        .details(config::DISCORD.default.details)
+                        .state(CONFIG.discord.default.state.as_str())
+                        .details(CONFIG.discord.default.details.as_str())
                         .buttons(Vec::from([Button::new(
                             "Прекол".to_string(),
                             "https://youtu.be/dQw4w9WgXcQ".to_string(),
                         )]))
                         .assets(
                             Assets::new()
-                                .large_image(config::DISCORD.default.large_image)
-                                .large_text(config::DISCORD.default.large_text)
-                                .small_image(config::DISCORD.default.smoll_image)
-                                .small_text(config::DISCORD.default.small_text),
+                                .large_image(CONFIG.discord.default.large_image.as_str())
+                                .large_text(CONFIG.discord.default.large_text.as_str())
+                                .small_image(CONFIG.discord.default.smoll_image.as_str())
+                                .small_text(CONFIG.discord.default.small_text.as_str()),
                         )
                         .timestamps(Timestamps::new().start(epoch_secs)),
                 )
@@ -41,18 +41,18 @@ pub fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, 
             discord_ipc_client
                 .set_activity(
                     Activity::new()
-                        .state(config::DISCORD.profile.state)
-                        .details(config::DISCORD.profile.details)
+                        .state(CONFIG.discord.profile.state.as_str())
+                        .details(CONFIG.discord.profile.details.as_str())
                         .buttons(Vec::from([Button::new(
                             "Прекол".to_string(),
                             "https://youtu.be/dQw4w9WgXcQ".to_string(),
                         )]))
                         .assets(
                             Assets::new()
-                                .large_image(config::DISCORD.profile.large_image)
-                                .large_text(config::DISCORD.profile.large_text)
-                                .small_image(config::DISCORD.profile.smoll_image)
-                                .small_text(config::DISCORD.profile.small_text),
+                                .large_image(CONFIG.discord.profile.large_image.as_str())
+                                .large_text(CONFIG.discord.profile.large_text.as_str())
+                                .small_image(CONFIG.discord.profile.smoll_image.as_str())
+                                .small_text(CONFIG.discord.profile.small_text.as_str()),
                         )
                         .timestamps(Timestamps::new().start(epoch_secs)),
                 )
@@ -62,18 +62,18 @@ pub fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, 
             discord_ipc_client
                 .set_activity(
                     Activity::new()
-                        .state(config::DISCORD.game.state)
-                        .details(config::DISCORD.game.details)
+                        .state(CONFIG.discord.game.state.as_str())
+                        .details(CONFIG.discord.game.details.as_str())
                         .buttons(Vec::from([Button::new(
                             "Прекол".to_string(),
                             "https://youtu.be/dQw4w9WgXcQ".to_string(),
                         )]))
                         .assets(
                             Assets::new()
-                                .large_image(config::DISCORD.game.large_image)
-                                .large_text(config::DISCORD.game.large_text)
-                                .small_image(config::DISCORD.game.smoll_image)
-                                .small_text(config::DISCORD.game.small_text),
+                                .large_image(CONFIG.discord.game.large_image.as_str())
+                                .large_text(CONFIG.discord.game.large_text.as_str())
+                                .small_image(CONFIG.discord.game.smoll_image.as_str())
+                                .small_text(CONFIG.discord.game.small_text.as_str()),
                         )
                         .timestamps(Timestamps::new().start(epoch_secs)),
                 )

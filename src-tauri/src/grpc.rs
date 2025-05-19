@@ -1,4 +1,4 @@
-use crate::config;
+use crate::config::CONFIG;
 use proto::aurora_launcher_service_client::AuroraLauncherServiceClient;
 use proto::AuthRequest;
 use proto::ProfileRequest;
@@ -9,7 +9,7 @@ pub mod proto {
 
 #[tauri::command]
 pub async fn auth(login: String, password: String) -> Result<proto::AuthResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
+    let mut client = AuroraLauncherServiceClient::connect(CONFIG.ip_grpc.as_str())
         .await
         .map_err(|err| err.to_string())?;
 
@@ -22,7 +22,7 @@ pub async fn auth(login: String, password: String) -> Result<proto::AuthResponse
 
 #[tauri::command]
 pub async fn get_servers() -> Result<proto::ServersResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
+    let mut client = AuroraLauncherServiceClient::connect(CONFIG.ip_grpc.as_str())
         .await
         .map_err(|err| err.to_string())?;
 
@@ -35,7 +35,7 @@ pub async fn get_servers() -> Result<proto::ServersResponse, String> {
 }
 
 pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
+    let mut client = AuroraLauncherServiceClient::connect(CONFIG.ip_grpc.as_str())
         .await
         .map_err(|err| err.to_string())?;
 
@@ -50,7 +50,7 @@ pub async fn get_profile(uuid: String) -> Result<proto::ProfileResponse, String>
 }
 
 pub async fn get_updates(dir: String) -> Result<proto::UpdateResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
+    let mut client = AuroraLauncherServiceClient::connect(CONFIG.ip_grpc.as_str())
         .await
         .map_err(|err| err.to_string())?;
 
@@ -65,7 +65,7 @@ pub async fn get_updates(dir: String) -> Result<proto::UpdateResponse, String> {
 }
 
 pub async fn get_token() -> Result<proto::VerifyResponse, String> {
-    let mut client = AuroraLauncherServiceClient::connect(config::IP_GRPC)
+    let mut client = AuroraLauncherServiceClient::connect(CONFIG.ip_grpc.as_str())
         .await
         .map_err(|err| err.to_string())?;
 
