@@ -5,8 +5,9 @@ pub static CONFIG: Lazy<Config> = Lazy::new(Config::default);
 
 impl Default for Config {
     fn default() -> Self {
-        const CONFIG_FILE: &str = include_str!("../../config.json");
-        let config_json = obfstr::obfstr!(CONFIG_FILE);
+        obfstr::obfstr! {
+            let config_json = include_str!("../../config.json");
+        }
         serde_json::from_str(&config_json).unwrap()
     }
 }
