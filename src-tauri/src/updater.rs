@@ -21,8 +21,7 @@ use tauri::State;
 pub async fn download_assets(state: State<'_, Mutex<StorageData>>, assets_index: String) {
     let asset_url = format!(
         "{}/files/assets/indexes/{}.json",
-        CONFIG.ip_web,
-        assets_index
+        CONFIG.ip_web, assets_index
     );
     let client = reqwest::Client::new();
     let resp = client
@@ -92,7 +91,6 @@ pub async fn download_libraries(
         let state = state.lock().unwrap();
         libraries_dir = state.libraries_dir.to_owned();
     }
-    println!("{:?}", libraries_dir);
     for file in &lib {
         let url = Url::parse(&(lib_url.as_str().to_owned() + file.path.as_str())).unwrap();
         let dir = libraries_dir.join(&file.path);
@@ -166,12 +164,11 @@ pub async fn download_java(state: State<'_, Mutex<StorageData>>, java_version: i
             .await
             .unwrap();
 
-        println!("Unpacking Java");
+        log::info!("Unpacking Java");
         let mut archive = zip::ZipArchive::new(Cursor::new(resp)).unwrap();
         let export = archive.extract(java_dir);
-        println!("{:?}", export);
     }
-    println!("Java installed!");
+    log::info!("Java installed!");
 }
 
 pub async fn download_auth_injector(state: State<'_, Mutex<StorageData>>) {
@@ -201,7 +198,6 @@ pub async fn download_auth_injector(state: State<'_, Mutex<StorageData>>) {
             .unwrap();
         create_dir_all(&auth_lib.parent().unwrap()).unwrap();
         write(&auth_lib, resp).unwrap();
-
     }
 }
 

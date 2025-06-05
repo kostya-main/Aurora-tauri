@@ -29,6 +29,7 @@ struct StorageData {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_log::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
         .plugin(prevent_default())
         .plugin(tauri_plugin_dialog::init())
@@ -92,7 +93,8 @@ fn default_store(app: &mut App) {
 }
 
 fn start_discord_ipc(app: &mut App) {
-    let discord_ipc_client = DeclarativeDiscordIpcClient::new(config::CONFIG.discord.app_id.as_str());
+    let discord_ipc_client =
+        DeclarativeDiscordIpcClient::new(config::CONFIG.discord.app_id.as_str());
     discord_ipc_client.enable();
     app.manage(discord_ipc_client);
 }
@@ -115,7 +117,7 @@ fn spawn_tray_icon(app: &mut App) {
                     .set_focus();
             }
             _ => {
-                println!("menu item {:?} not handled", event.id);
+                log::error!("menu item {:?} not handled", event.id);
             }
         })
         .build(app)

@@ -12,6 +12,7 @@
     "store:default",
     "system-info:allow-total-memory",
     "dialog:allow-open",
-    "opener:default"
+    "opener:default",
+    "log:default"
   ]
 }

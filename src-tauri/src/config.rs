@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use once_cell::sync::Lazy;
+use serde::{Deserialize, Serialize};
 
 pub static CONFIG: Lazy<Config> = Lazy::new(Config::default);
 

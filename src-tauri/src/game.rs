@@ -10,15 +10,15 @@ pub async fn start_game(
     server: grpc::proto::Server,
 ) -> Result<(), ()> {
     let profile = grpc::get_profile(server.profile_uuid).await.unwrap();
-    println!("Assets downloading...");
+    log::info!("Assets downloading...");
     updater::download_assets(state.clone(), profile.asset_index).await;
-    println!("Libraries downloading...");
+    log::info!("Libraries downloading...");
     let download_lib = updater::download_libraries(state.clone(), profile.libraries).await;
-    println!("Game files downloading...");
+    log::info!("Game files downloading...");
     updater::download_game_files(state.clone(), profile.client_dir).await;
-    println!("Java downloading...");
+    log::info!("Java downloading...");
     updater::download_java(state.clone(), profile.java_version).await;
-    println!("Auth injector downloading...");
+    log::info!("Auth injector downloading...");
     updater::download_auth_injector(state.clone()).await;
     Ok(())
 }
